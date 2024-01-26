@@ -1,0 +1,26 @@
+# macOS
+.DS_Store
+
+# Local Configuration File
+local.properties
+/local.properties
+
+# Gradle
+.gradle/
+build/
+
+# IntelliJ
+*.iml
+.idea/
+
+# Android Studio Generated
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Logs
+*.log
+
+# Builds
+app/release/
+app/build/
