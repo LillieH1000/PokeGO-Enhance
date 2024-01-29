@@ -53,7 +53,7 @@ def scroll(open, gift, hasgift):
     time.sleep(1)
     friends(open, gift, hasgift)
 
-def friends(open, gift, hasgift):
+def friends(open, gift, hasgift, openlimit=openlimit, giftlimit=giftlimit):
     if (open == 1):
         # Friend 1
         opentap("2b0", "3ab")
@@ -71,10 +71,19 @@ def friends(open, gift, hasgift):
     else:
         # Friend 1
         sendtap("2b0", "3ab", hasgift)
+        giftlimit += 1
+        if (giftlimit == gift):
+            sys.exit()
         # Friend 2
         sendtap("20e", "510", hasgift)
+        giftlimit += 1
+        if (giftlimit == gift):
+            sys.exit()
         # Friend 3
         sendtap("25a", "644", hasgift)
+        giftlimit += 1
+        if (giftlimit == gift):
+            sys.exit()
         # Friend 4
         sendtap("239", "7c7", hasgift)
         giftlimit += 1
@@ -87,4 +96,4 @@ if (parameters[0] == "open"):
     friends(1, None, None)
 
 if (parameters[0] == "send"):
-    friends(0, parameters[1], parameter[2])
+    friends(0, int(parameters[1]), int(parameters[2]))
