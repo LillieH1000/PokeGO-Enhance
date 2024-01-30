@@ -30,7 +30,9 @@ def opentap(x, y):
     os.popen(f"{platform} shell input tap $((16#21c)) $((16#63f))")
     time.sleep(3)
     os.popen(f"{platform} shell input tap $((16#224)) $((16#7da))")
-    time.sleep(20)
+    time.sleep(1)
+    os.popen(f"{platform} shell input tap $((16#221)) $((16#88f))")
+    time.sleep(3)
     os.popen(f"{platform} shell input tap $((16#221)) $((16#88f))")
     time.sleep(3)
 
@@ -45,7 +47,9 @@ def sendtap(x, y, hasgift):
     os.popen(f"{platform} shell input tap $((16#272)) $((16#34f))")
     time.sleep(3)
     os.popen(f"{platform} shell input tap $((16#220)) $((16#7c5))")
-    time.sleep(5)
+    time.sleep(1)
+    os.popen(f"{platform} shell input tap $((16#221)) $((16#88f))")
+    time.sleep(3)
     os.popen(f"{platform} shell input tap $((16#221)) $((16#88f))")
     time.sleep(3)
 
