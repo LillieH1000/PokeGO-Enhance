@@ -117,24 +117,24 @@ def friends(open, gift, hasgift):
 print("")
 print("PokeGO Touch".center(os.get_terminal_size().columns))
 print("By LillieH1000".center(os.get_terminal_size().columns))
-print("Version: 3".center(os.get_terminal_size().columns))
+print("Version: 4".center(os.get_terminal_size().columns))
 print("")
 print("You can press ctrl+c to kill the script anytime in case of an error".center(os.get_terminal_size().columns))
 print("")
 
-op1 = input("Would you to open gifts or sends gifts? Type open or o for opening gifts, type send or s for sending gifts: ")
+op1 = input("Would you to open gifts or sends gifts? Type open or o for opening gifts, type send or s for sending gifts: ").lower()
 print("")
 
 if (op1 == "open" or op1 == "o"):
-    op2 = input("How many gifts would you like to open? Please enter a number: ")
+    op2 = input("How many gifts would you like to open? Please enter a number: ").lower()
     print("")
     print("Sending inputs, script will auto stop on completion")
     friends(1, int(op2), None)
 
 if (op1 == "send" or op1 == "s"):
-    op2 = input("How many gifts would you like to send? Please enter a number: ")
+    op2 = input("How many gifts would you like to send? Please enter a number: ").lower()
     print("")
-    op3 = input("Does the top of the list have gifts? If yes type yes or y, if no type no or n: ")
+    op3 = input("Does the top of the list have gifts? If yes type yes or y, if no type no or n: ").lower()
     print("")
     print("Sending inputs, script will auto stop on completion")
     friends(0, int(op2), op3)
