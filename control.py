@@ -21,6 +21,8 @@ if (len(parameters) == 1):
         os.system(f"{platform} shell content insert --uri content://settings/system --bind name:s:show_touches --bind value:i:0")
     elif (parameters[0] == "event"):
         os.system(f"{platform} shell getevent -l")
+    elif (parameters[0] == "res"):
+        os.system(f"{platform} shell wm size")
     else:
         sys.exit()
 
