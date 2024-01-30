@@ -6,22 +6,23 @@ platform = ""
 openlimit = 0
 giftlimit = 0
 
-if (len(parameters) == 0):
-    sys.exit()
-
 if (os.name == "nt"):
     platform = ".\\w-tools\\adb.exe"
 elif (os.name == "posix"):
     platform = "./l-tools/adb"
 
-if (parameters[0] == "show"):
-    os.popen(f"{platform} shell content insert --uri content://settings/system --bind name:s:show_touches --bind value:i:1")
+if (len(parameters) >= 1):
+    sys.exit()
 
-if (parameters[0] == "hide"):
-    os.popen(f"{platform} shell content insert --uri content://settings/system --bind name:s:show_touches --bind value:i:0")
-
-if (parameters[0] == "event"):
-    os.system(f"{platform} shell getevent -l")
+if (len(parameters) == 1):
+    if (parameters[0] == "show"):
+        os.system(f"{platform} shell content insert --uri content://settings/system --bind name:s:show_touches --bind value:i:1")
+    elif (parameters[0] == "hide"):
+        os.system(f"{platform} shell content insert --uri content://settings/system --bind name:s:show_touches --bind value:i:0")
+    elif (parameters[0] == "event"):
+        os.system(f"{platform} shell getevent -l")
+    else:
+        sys.exit()
 
 def opentap(x, y):
     os.popen(f"{platform} shell input tap $((16#{x})) $((16#{y}))")
@@ -36,7 +37,7 @@ def opentap(x, y):
 def sendtap(x, y, hasgift):
     os.popen(f"{platform} shell input tap $((16#{x})) $((16#{y}))")
     time.sleep(3)
-    if (hasgift == 1):
+    if (hasgift == "yes" or hasgift == "y"):
         os.popen(f"{platform} shell input tap $((16#221)) $((16#88f))")
         time.sleep(3)
     os.popen(f"{platform} shell input tap $((16#130)) $((16#6c9))")
@@ -53,22 +54,33 @@ def scroll(open, gift, hasgift):
     time.sleep(1)
     friends(open, gift, hasgift)
 
-def friends(open, gift, hasgift, openlimit=openlimit, giftlimit=giftlimit):
+def friends(open, gift, hasgift):
     if (open == 1):
+        global openlimit
         # Friend 1
         opentap("2b0", "3ab")
+        openlimit += 1
+        if (openlimit == gift):
+            sys.exit()
         # Friend 2
         opentap("20e", "510")
+        openlimit += 1
+        if (openlimit == gift):
+            sys.exit()
         # Friend 3
         opentap("25a", "644")
+        openlimit += 1
+        if (openlimit == gift):
+            sys.exit()
         # Friend 4
         opentap("239", "7c7")
         openlimit += 1
-        if (openlimit == 5):
+        if (openlimit == gift):
             sys.exit()
         else:
             scroll(open, gift, hasgift)
     else:
+        global giftlimit
         # Friend 1
         sendtap("2b0", "3ab", hasgift)
         giftlimit += 1
@@ -92,8 +104,13 @@ def friends(open, gift, hasgift, openlimit=openlimit, giftlimit=giftlimit):
         else:
             scroll(open, gift, hasgift)
 
-if (parameters[0] == "open"):
-    friends(1, None, None)
+op1 = input("Would you to open gifts or sends gifts? Type open or o for opening gifts, type send or s for sending gifts: ")
 
-if (parameters[0] == "send"):
-    friends(0, int(parameters[1]), int(parameters[2]))
+if (op1 == "open" or op1 == "o"):
+    op2 = input("How many gifts would you like to open? Please enter a number: ")
+    friends(1, int(op2), None)
+
+if (op1 == "send" or op1 == "s"):
+    op2 = input("How many gifts would you like to send? Please enter a number: ")
+    op3 = input("Does the top of the list have gifts? If yes type yes or y, if no type no or n: ")
+    friends(0, int(op2), op3)
