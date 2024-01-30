@@ -11,18 +11,22 @@ if (os.name == "nt"):
 elif (os.name == "posix"):
     platform = "./l-tools/adb"
 
-if (len(parameters) >= 1):
+if (len(parameters) > 1):
     sys.exit()
 
 if (len(parameters) == 1):
     if (parameters[0] == "show"):
         os.system(f"{platform} shell content insert --uri content://settings/system --bind name:s:show_touches --bind value:i:1")
+        sys.exit()
     elif (parameters[0] == "hide"):
         os.system(f"{platform} shell content insert --uri content://settings/system --bind name:s:show_touches --bind value:i:0")
+        sys.exit()
     elif (parameters[0] == "event"):
         os.system(f"{platform} shell getevent -l")
+        sys.exit()
     elif (parameters[0] == "res"):
         os.system(f"{platform} shell wm size")
+        sys.exit()
     else:
         sys.exit()
 
@@ -110,13 +114,27 @@ def friends(open, gift, hasgift):
         else:
             scroll(open, gift, hasgift)
 
+print("")
+print("PokeGO Touch".center(os.get_terminal_size().columns))
+print("By LillieH1000".center(os.get_terminal_size().columns))
+print("Version: 3".center(os.get_terminal_size().columns))
+print("")
+print("You can press ctrl+c to kill the script anytime in case of an error".center(os.get_terminal_size().columns))
+print("")
+
 op1 = input("Would you to open gifts or sends gifts? Type open or o for opening gifts, type send or s for sending gifts: ")
+print("")
 
 if (op1 == "open" or op1 == "o"):
     op2 = input("How many gifts would you like to open? Please enter a number: ")
+    print("")
+    print("Sending inputs, script will auto stop on completion")
     friends(1, int(op2), None)
 
 if (op1 == "send" or op1 == "s"):
     op2 = input("How many gifts would you like to send? Please enter a number: ")
+    print("")
     op3 = input("Does the top of the list have gifts? If yes type yes or y, if no type no or n: ")
+    print("")
+    print("Sending inputs, script will auto stop on completion")
     friends(0, int(op2), op3)
