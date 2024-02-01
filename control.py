@@ -2,6 +2,7 @@ import os, sys, time
 
 parameters = sys.argv[1:]
 platform = ""
+navigation = 0
 
 openlimit = 0
 giftlimit = 0
@@ -12,6 +13,10 @@ if (os.name == "nt"):
 elif (os.name == "posix"):
     # Linux
     platform = "./l-tools/adb"
+
+gesture = os.popen(f"{platform} shell cmd overlay dump com.android.internal.systemui.navbar.gestural").read()
+if (gesture[gesture.find("mIsEnabled"):].splitlines()[0].find("false")== -1):
+    navigation = 1
 
 if (len(parameters) > 1):
     sys.exit()
@@ -43,9 +48,14 @@ def opentap(x, y):
     # Gift
     os.popen(f"{platform} shell input tap $((16#21c)) $((16#63f))")
     time.sleep(3)
-    # Open
-    os.popen(f"{platform} shell input tap $((16#224)) $((16#7da))")
-    time.sleep(1)
+    if (navigation == 1):
+        # Open
+        os.popen(f"{platform} shell input tap $((16#224)) $((16#7da))")
+        time.sleep(1)
+    else:
+        # Open
+        os.popen(f"{platform} shell input tap $((16#245)) $((16#788))")
+        time.sleep(1)
     # Close
     os.popen(f"{platform} shell input tap $((16#221)) $((16#88f))")
     os.popen(f"{platform} shell input tap $((16#221)) $((16#88f))")
@@ -137,7 +147,7 @@ def friends(open, gift, hasgift):
 print("")
 print("PokeGO Touch".center(os.get_terminal_size().columns))
 print("By LillieH1000".center(os.get_terminal_size().columns))
-print("Version: 6".center(os.get_terminal_size().columns))
+print("Version: 7".center(os.get_terminal_size().columns))
 print("")
 print("You can press ctrl+c to kill the script anytime in case of an error".center(os.get_terminal_size().columns))
 print("")
