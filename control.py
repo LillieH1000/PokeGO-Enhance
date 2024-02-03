@@ -1,11 +1,13 @@
-import os, sys, time
+import atexit, os, signal, sys, time
 
-parameters = sys.argv[1:]
+# Set Global Variables
+
 platform = ""
 navigation = 0
-
 openlimit = 0
 giftlimit = 0
+
+# Get Platform And Set ADB Location
 
 if (sys.platform == "win32"):
     # Windows
@@ -17,32 +19,36 @@ elif (sys.platform == "linux"):
     # Linux
     platform = "./l-tools/adb"
 
-gesture = os.popen(f"{platform} shell cmd overlay dump com.android.internal.systemui.navbar.gestural").read()
-if (gesture[gesture.find("mIsEnabled"):].splitlines()[0].find("false")== -1):
-    navigation = 1
+# Start ADB
 
-if (len(parameters) > 1):
+os.system(f"{platform} start-server >/dev/null 2>&1")
+
+# Exit Handling
+
+def on_exit():
+    os.system(f"{platform} kill-server >/dev/null 2>&1")
+
+def handle_exit(signum, frame):
+    sys.exit(0)
+
+atexit.register(on_exit)
+signal.signal(signal.SIGTERM, handle_exit)
+signal.signal(signal.SIGINT, handle_exit)
+
+# Check If Device Is Connected
+
+device = os.popen(f"{platform} devices").read()
+if (len(device.split("\n", 2)[2]) == 0):
+    input("Please connect an Android device to use the script, press enter to exit")
     sys.exit()
 
-if (len(parameters) == 1):
-    if (parameters[0] == "show"):
-        # Show Touches
-        os.system(f"{platform} shell content insert --uri content://settings/system --bind name:s:show_touches --bind value:i:1")
-        sys.exit()
-    elif (parameters[0] == "hide"):
-        # Hide Touches
-        os.system(f"{platform} shell content insert --uri content://settings/system --bind name:s:show_touches --bind value:i:0")
-        sys.exit()
-    elif (parameters[0] == "event"):
-        # Touch Events
-        os.system(f"{platform} shell getevent -l")
-        sys.exit()
-    elif (parameters[0] == "res"):
-        # Device Resolution
-        os.system(f"{platform} shell wm size")
-        sys.exit()
-    else:
-        sys.exit()
+# Check If Navigation Is Gesture Based And Set Global Variable
+
+gesture = os.popen(f"{platform} shell cmd overlay dump com.android.internal.systemui.navbar.gestural").read()
+if (gesture[gesture.find("mIsEnabled"):].splitlines()[0].find("false") == -1):
+    navigation = 1
+
+# Input Functions
 
 def opentap(x, y):
     # Friend
@@ -147,10 +153,12 @@ def friends(open, gift, hasgift):
         else:
             scroll(open, gift, hasgift)
 
+# Print UI And Get Inputs
+
 print("")
 print("PokeGO Touch".center(os.get_terminal_size().columns))
 print("By LillieH1000".center(os.get_terminal_size().columns))
-print("Version: 8".center(os.get_terminal_size().columns))
+print("Version: 9".center(os.get_terminal_size().columns))
 print("")
 print("You can press ctrl+c to kill the script anytime in case of an error".center(os.get_terminal_size().columns))
 print("")
