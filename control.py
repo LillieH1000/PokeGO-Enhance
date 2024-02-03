@@ -7,10 +7,13 @@ navigation = 0
 openlimit = 0
 giftlimit = 0
 
-if (os.name == "nt"):
+if (sys.platform == "win32"):
     # Windows
     platform = ".\\w-tools\\adb.exe"
-elif (os.name == "posix"):
+elif (sys.platform == "darwin"):
+    # macOS
+    platform = "./m-tools/adb"
+elif (sys.platform == "linux"):
     # Linux
     platform = "./l-tools/adb"
 
@@ -147,7 +150,7 @@ def friends(open, gift, hasgift):
 print("")
 print("PokeGO Touch".center(os.get_terminal_size().columns))
 print("By LillieH1000".center(os.get_terminal_size().columns))
-print("Version: 7".center(os.get_terminal_size().columns))
+print("Version: 8".center(os.get_terminal_size().columns))
 print("")
 print("You can press ctrl+c to kill the script anytime in case of an error".center(os.get_terminal_size().columns))
 print("")
