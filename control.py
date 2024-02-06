@@ -82,7 +82,7 @@ def sendtap(x, y, hasgift):
         os.popen(f"{platform} shell input tap $((16#221)) $((16#88f))")
         time.sleep(3)
     # Send Gift
-    os.popen(f"{platform} shell input tap $((16#130)) $((16#6c9))")
+    os.popen(f"{platform} shell input tap $((16#11b)) $((16#70a))")
     time.sleep(3)
     # Gift Image
     os.popen(f"{platform} shell input tap $((16#272)) $((16#34f))")
@@ -158,7 +158,7 @@ def friends(open, gift, hasgift):
 print("")
 print("PokeGO Touch".center(os.get_terminal_size().columns))
 print("By LillieH1000".center(os.get_terminal_size().columns))
-print("Version: 9".center(os.get_terminal_size().columns))
+print("Version: 10".center(os.get_terminal_size().columns))
 print("")
 print("You can press ctrl+c to kill the script anytime in case of an error".center(os.get_terminal_size().columns))
 print("")
