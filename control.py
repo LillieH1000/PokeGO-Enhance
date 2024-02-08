@@ -60,13 +60,11 @@ def opentap(x, y):
     if (navigation == 1):
         # Open
         os.popen(f"{platform} shell input tap $((16#224)) $((16#7da))")
-        time.sleep(1)
     else:
         # Open
         os.popen(f"{platform} shell input tap $((16#245)) $((16#788))")
-        time.sleep(1)
+    time.sleep(2)
     # Close
-    os.popen(f"{platform} shell input tap $((16#221)) $((16#88f))")
     os.popen(f"{platform} shell input tap $((16#221)) $((16#88f))")
     time.sleep(3)
     # Close
@@ -158,7 +156,7 @@ def friends(open, gift, hasgift):
 print("")
 print("PokeGO Touch".center(os.get_terminal_size().columns))
 print("By LillieH1000".center(os.get_terminal_size().columns))
-print("Version: 10".center(os.get_terminal_size().columns))
+print("Version: 11".center(os.get_terminal_size().columns))
 print("")
 print("You can press ctrl+c to kill the script anytime in case of an error".center(os.get_terminal_size().columns))
 print("")
