@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.chaquo.python")
 }
 
 android {
@@ -11,13 +12,17 @@ android {
     defaultConfig {
         applicationId = "h.lillie.pokegotouch"
         minSdk = 30
-        // noinspection OldTargetApi,EditedTargetSdkVersion
+        // noinspection OldTargetApi, EditedTargetSdkVersion
         targetSdk = 33
         compileSdk = 34
         versionCode = 1
         versionName = "1.0.0"
         vectorDrawables {
             useSupportLibrary = true
+        }
+        ndk {
+            // noinspection ChromeOsAbiSupport
+            abiFilters += listOf("arm64-v8a", "x86_64")
         }
     }
 
@@ -48,6 +53,18 @@ android {
     }
 }
 
+chaquopy {
+    defaultConfig {
+        pyc {
+            src = false
+        }
+        pip {
+            install("adb-shell")
+            install("adb-shell[async]")
+        }
+    }
+}
+
 dependencies {
     // Core
     val core_version = "1.12.0"
@@ -64,14 +81,4 @@ dependencies {
     // Material
     val material_version = "1.11.0"
     implementation("com.google.android.material:material:$material_version")
-
-    // Kotlinx Coroutines
-    val kotlinx_coroutines_version = "1.7.3"
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_version")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_version")
-
-    // Lifecycle
-    val lifecycle_version = "2.7.0"
-    implementation("androidx.lifecycle:lifecycle-common:$lifecycle_version")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
 }

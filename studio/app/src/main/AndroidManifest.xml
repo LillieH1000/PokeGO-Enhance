@@ -3,6 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <queries>
+        <package android:name="com.nianticlabs.pokemongo" />
+    </queries>
     <application
         android:allowBackup="false"
         android:label="PokeGO Touch"

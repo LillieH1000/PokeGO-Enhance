@@ -1,21 +1,20 @@
 package h.lillie.pokegotouch
 
-import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.PixelFormat
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
-import android.view.GestureDetector
 import android.view.Gravity
-import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.chaquo.python.Python
+import com.chaquo.python.android.AndroidPlatform
 
-@SuppressLint("ClickableViewAccessibility","InflateParams")
 class Main : AppCompatActivity() {
+    @Suppress("Deprecation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
@@ -26,17 +25,16 @@ class Main : AppCompatActivity() {
                 Uri.parse("package:$packageName")
             ), 0)
         } else {
-            val gestureDetector = GestureDetector(this@Main, object : GestureDetector.SimpleOnGestureListener() {
-                override fun onDown(e: MotionEvent): Boolean {
-                    Log.d("Touch x", e.x.toString())
-                    Log.d("Touch y", e.y.toString())
-                    return true
-                }
-            })
-
             val view = View(this@Main)
-            view.setOnTouchListener { _, event ->
-                gestureDetector.onTouchEvent(event!!)
+            view.setBackgroundColor(Color.RED)
+            view.setOnClickListener {
+                if (!Python.isStarted()) {
+                    Python.start(AndroidPlatform(this@Main))
+
+                    val py = Python.getInstance()
+                    val module = py.getModule("control")
+                    module.callAttr("run", null, filesDir)
+                }
             }
 
             val windowManager: WindowManager = getSystemService(WINDOW_SERVICE) as WindowManager
@@ -44,14 +42,17 @@ class Main : AppCompatActivity() {
             val windowManagerLayoutParams = WindowManager.LayoutParams(
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
             )
-            windowManagerLayoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
-            windowManagerLayoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
+            windowManagerLayoutParams.height = 100
+            windowManagerLayoutParams.width = 100
             windowManagerLayoutParams.format = PixelFormat.TRANSLUCENT
             windowManagerLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-
             windowManagerLayoutParams.gravity = Gravity.TOP
-
             windowManager.addView(view, windowManagerLayoutParams)
+
+            val intent: Intent? = packageManager.getLaunchIntentForPackage("com.nianticlabs.pokemongo")
+            if (intent != null) {
+                startActivity(intent)
+            }
         }
     }
 }
