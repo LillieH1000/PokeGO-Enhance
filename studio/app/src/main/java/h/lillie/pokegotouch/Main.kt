@@ -1,11 +1,14 @@
 package h.lillie.pokegotouch
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.net.Uri
+import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.provider.Settings
+import android.text.format.Formatter
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -30,11 +33,14 @@ class Main : AppCompatActivity() {
             view.setOnClickListener {
                 if (!Python.isStarted()) {
                     Python.start(AndroidPlatform(this@Main))
-
-                    val py = Python.getInstance()
-                    val module = py.getModule("control")
-                    module.callAttr("run", null, filesDir)
                 }
+
+                val wifiManager = this@Main.getSystemService(Context.WIFI_SERVICE) as WifiManager
+                val ipAddress = Formatter.formatIpAddress(wifiManager.connectionInfo.ipAddress)
+
+                val py = Python.getInstance()
+                val module = py.getModule("control")
+                module.callAttr("run", ipAddress, filesDir)
             }
 
             val windowManager: WindowManager = getSystemService(WINDOW_SERVICE) as WindowManager
