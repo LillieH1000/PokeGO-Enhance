@@ -2,9 +2,10 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <queries>
         <package android:name="com.nianticlabs.pokemongo" />
@@ -17,8 +18,7 @@
         android:supportsRtl="false"
         android:enableOnBackInvokedCallback="true"
         android:theme="@style/Theme.MaterialComponents.NoActionBar.Bridge"
-        tools:ignore="DataExtractionRules"
-        tools:targetApi="tiramisu">
+        tools:ignore="DataExtractionRules">
         <activity
             android:name=".Main"
             android:exported="true">
@@ -27,5 +27,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".MainService"
+            android:foregroundServiceType="specialUse"
+            android:exported="false"
+            android:stopWithTask="false">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="special" />
+        </service>
     </application>
 </manifest>

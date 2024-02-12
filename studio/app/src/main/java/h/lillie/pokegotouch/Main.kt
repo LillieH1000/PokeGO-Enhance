@@ -1,58 +1,43 @@
 package h.lillie.pokegotouch
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.PixelFormat
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.view.Gravity
-import android.view.View
-import android.view.WindowManager
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.chaquo.python.Python
-import com.chaquo.python.android.AndroidPlatform
+import androidx.core.app.NotificationManagerCompat
 
 class Main : AppCompatActivity() {
-    @Suppress("Deprecation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main)
+        checkPermissions()
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        stopService(Intent(this@Main, MainService::class.java))
+        finishAffinity()
+    }
+
+    private fun checkPermissions() {
         if (!Settings.canDrawOverlays(this@Main)) {
-            startActivityForResult(Intent(
+            activityLauncher.launch(Intent(
                 Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                 Uri.parse("package:$packageName")
-            ), 0)
+            ))
+        } else if (!NotificationManagerCompat.from(this@Main).areNotificationsEnabled()) {
+            permissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
         } else {
-            val view = View(this@Main)
-            view.setBackgroundColor(Color.RED)
-            view.setOnClickListener {
-                if (!Python.isStarted()) {
-                    Python.start(AndroidPlatform(this@Main))
-                }
-
-                val py = Python.getInstance()
-                val module = py.getModule("control")
-                module.callAttr("run", filesDir)
-            }
-
-            val windowManager: WindowManager = getSystemService(WINDOW_SERVICE) as WindowManager
-
-            val windowManagerLayoutParams = WindowManager.LayoutParams(
-                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-            )
-            windowManagerLayoutParams.height = 100
-            windowManagerLayoutParams.width = 100
-            windowManagerLayoutParams.format = PixelFormat.TRANSLUCENT
-            windowManagerLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-            windowManagerLayoutParams.gravity = Gravity.TOP
-            windowManager.addView(view, windowManagerLayoutParams)
-
-            val intent: Intent? = packageManager.getLaunchIntentForPackage("com.nianticlabs.pokemongo")
-            if (intent != null) {
-                startActivity(intent)
-            }
+            startForegroundService(Intent(this@Main, MainService::class.java))
         }
+    }
+
+    private val activityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { _ ->
+        checkPermissions()
+    }
+
+    private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ ->
+        checkPermissions()
     }
 }

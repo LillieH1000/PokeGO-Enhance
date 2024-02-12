@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "h.lillie.pokegotouch"
-        minSdk = 30
+        minSdk = 33
         // noinspection OldTargetApi, EditedTargetSdkVersion
         targetSdk = 33
         compileSdk = 34
@@ -67,18 +67,11 @@ chaquopy {
 
 dependencies {
     // Core
-    val core_version = "1.12.0"
-    implementation("androidx.core:core-ktx:$core_version")
-
+    implementation("androidx.core:core-ktx:1.12.0")
     // AppCompat
-    val appcompat_version = "1.6.1"
-    implementation("androidx.appcompat:appcompat:$appcompat_version")
-
+    implementation("androidx.appcompat:appcompat:1.6.1")
     // ConstraintLayout
-    val constraintlayout_version = "2.1.4"
-    implementation("androidx.constraintlayout:constraintlayout:$constraintlayout_version")
-
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     // Material
-    val material_version = "1.11.0"
-    implementation("com.google.android.material:material:$material_version")
+    implementation("com.google.android.material:material:1.11.0")
 }
