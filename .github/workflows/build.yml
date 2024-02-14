@@ -1,0 +1,43 @@
+name: Generate Apks
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Checkout JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Chmod Gradle
+        working-directory: ./studio
+        run: chmod +x ./gradlew
+
+      - name: Build Gradle
+        working-directory: ./studio
+        run: ./gradlew build
+
+      - name: Assemble Debug Apk
+        working-directory: ./studio
+        run: ./gradlew assembleDebug
+
+      - name: Assemble Release Apk
+        working-directory: ./studio
+        run: ./gradlew assembleRelease
+
+      - name: Upload Apks
+        uses: actions/upload-artifact@v4
+        working-directory: ./studio
+        with:
+          path: |
+            ./app/build/outputs/apk/debug/*.apk
+            ./app/build/outputs/apk/release/*.apk
