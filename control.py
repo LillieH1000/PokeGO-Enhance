@@ -63,7 +63,7 @@ def opentap(x, y):
     else:
         # Open
         os.popen(f"{platform} shell input tap $((16#245)) $((16#788))")
-    time.sleep(2)
+    time.sleep(1)
     # Close
     os.popen(f"{platform} shell input tap $((16#221)) $((16#88f))")
     time.sleep(3)
@@ -95,68 +95,70 @@ def sendtap(x, y, hasgift):
     os.popen(f"{platform} shell input tap $((16#221)) $((16#88f))")
     time.sleep(3)
 
-def scroll(open, gift, hasgift):
-    # Swipe
-    os.popen(f"{platform} shell input touchscreen swipe 250 1000 250 500 400")
-    time.sleep(1)
-    friends(open, gift, hasgift)
-
 def friends(open, gift, hasgift):
     if (open == 1):
-        global openlimit
-        # Friend 1
-        opentap("2b0", "3ab")
-        openlimit += 1
-        if (openlimit == gift):
-            sys.exit()
-        # Friend 2
-        opentap("20e", "510")
-        openlimit += 1
-        if (openlimit == gift):
-            sys.exit()
-        # Friend 3
-        opentap("25a", "644")
-        openlimit += 1
-        if (openlimit == gift):
-            sys.exit()
-        # Friend 4
-        opentap("239", "7c7")
-        openlimit += 1
-        if (openlimit == gift):
-            sys.exit()
-        else:
-            scroll(open, gift, hasgift)
+        while True:
+            global openlimit
+            # Friend 1
+            opentap("2b0", "3ab")
+            openlimit += 1
+            if (openlimit == gift):
+                sys.exit()
+            # Friend 2
+            opentap("20e", "510")
+            openlimit += 1
+            if (openlimit == gift):
+                sys.exit()
+            # Friend 3
+            opentap("25a", "644")
+            openlimit += 1
+            if (openlimit == gift):
+                sys.exit()
+            # Friend 4
+            opentap("239", "7c7")
+            openlimit += 1
+            if (openlimit == gift):
+                sys.exit()
+            else:
+                # Swipe
+                os.popen(f"{platform} shell input touchscreen swipe 250 1000 250 500 400")
+                time.sleep(3)
+                continue
     else:
-        global giftlimit
-        # Friend 1
-        sendtap("2b0", "3ab", hasgift)
-        giftlimit += 1
-        if (giftlimit == gift):
-            sys.exit()
-        # Friend 2
-        sendtap("20e", "510", hasgift)
-        giftlimit += 1
-        if (giftlimit == gift):
-            sys.exit()
-        # Friend 3
-        sendtap("25a", "644", hasgift)
-        giftlimit += 1
-        if (giftlimit == gift):
-            sys.exit()
-        # Friend 4
-        sendtap("239", "7c7", hasgift)
-        giftlimit += 1
-        if (giftlimit == gift):
-            sys.exit()
-        else:
-            scroll(open, gift, hasgift)
+        while True:
+            global giftlimit
+            # Friend 1
+            sendtap("2b0", "3ab", hasgift)
+            giftlimit += 1
+            if (giftlimit == gift):
+                sys.exit()
+            # Friend 2
+            sendtap("20e", "510", hasgift)
+            giftlimit += 1
+            if (giftlimit == gift):
+                sys.exit()
+            # Friend 3
+            sendtap("25a", "644", hasgift)
+            giftlimit += 1
+            if (giftlimit == gift):
+                sys.exit()
+            # Friend 4
+            sendtap("239", "7c7", hasgift)
+            giftlimit += 1
+            if (giftlimit == gift):
+                sys.exit()
+            else:
+                # Swipe
+                os.popen(f"{platform} shell input touchscreen swipe 250 1000 250 500 400")
+                time.sleep(3)
+                continue
 
 # Print UI And Get Inputs
 
 print("")
 print("PokeGO Touch".center(os.get_terminal_size().columns))
 print("By LillieH1000".center(os.get_terminal_size().columns))
-print("Version: 11".center(os.get_terminal_size().columns))
+print("Version: 12".center(os.get_terminal_size().columns))
 print("")
 print("You can press ctrl+c to kill the script anytime in case of an error".center(os.get_terminal_size().columns))
 print("")
