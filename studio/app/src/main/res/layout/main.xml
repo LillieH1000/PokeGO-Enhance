@@ -14,7 +14,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="PokeGo Touch"
+        android:text="PokeGO Touch"
         android:textColor="@color/white"
         android:textSize="30sp"
         android:gravity="center"
@@ -74,7 +74,7 @@
         android:id="@+id/usbDebuggingPermission"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="USB Debugging Required"
+        android:text="USB Debugging Permission Required"
         android:textColor="@color/white"
         android:gravity="center"
         tools:ignore="HardcodedText" />
