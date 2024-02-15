@@ -2,9 +2,24 @@ from adb_shell.auth.keygen import keygen
 from adb_shell.adb_device import AdbDeviceTcp
 from adb_shell.auth.sign_pythonrsa import PythonRSASigner
 from pathlib import Path
-import time
+import ctypes, inspect, threading, time
 
 device = None
+thread = None
+
+def _async_raise(tid, exctype):
+    tid = ctypes.c_long(tid)
+    if not inspect.isclass(exctype):
+        exctype = type(exctype)
+    res = ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, ctypes.py_object(exctype))
+    if res == 0:
+        raise ValueError("")
+    elif res != 1:
+        ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, None)
+        raise SystemError("")
+ 
+def runStop():
+    _async_raise(thread.ident, SystemExit)
 
 def runConnect(filesDir):
     adbkey = str(filesDir) + "/adbkey"
@@ -33,7 +48,7 @@ def opentap(x, y):
     time.sleep(3)
     # Open
     device.shell("input tap 548 2010")
-    time.sleep(1.5)
+    time.sleep(1)
     # Close
     device.shell("input tap 545 2191")
     time.sleep(3)
@@ -70,3 +85,9 @@ def runOpen(openLimit):
             device.shell("input touchscreen swipe 250 1000 250 500 400")
             time.sleep(3)
             continue
+
+def runOpenThread(openLimit):
+    global thread
+    thread = threading.Thread(target = runOpen, args = (openLimit,))
+    thread.start()
+    thread.join()

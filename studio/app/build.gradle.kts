@@ -73,4 +73,10 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     // Material
     implementation("com.google.android.material:material:1.11.0")
+    // Kotlinx Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    // Lifecycle
+    implementation("androidx.lifecycle:lifecycle-common:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 }

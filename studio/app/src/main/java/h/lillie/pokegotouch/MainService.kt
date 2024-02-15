@@ -25,10 +25,16 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @SuppressLint("SetTextI18n")
 class MainService : Service() {
     private lateinit var windowManager: WindowManager
+    private lateinit var scope: Job
 
     private lateinit var openLayout: RelativeLayout
     private lateinit var openPopup: RelativeLayout
@@ -92,60 +98,74 @@ class MainService : Service() {
 
         openLayout.addView(openLayoutText)
         openLayout.setOnClickListener {
-            removeViews()
-
-            val openPopupGradient = GradientDrawable()
-            openPopupGradient.cornerRadii = floatArrayOf(30f, 30f, 30f, 30f, 30f, 30f, 30f, 30f)
-            openPopupGradient.shape = GradientDrawable.RECTANGLE
-            openPopupGradient.setColor(getColor(R.color.grey))
-
-            openPopup = RelativeLayout(this@MainService)
-            openPopup.background = openPopupGradient
-
-            val openText = TextView(this@MainService)
-            openText.height = dpToPx(50)
-            openText.width = dpToPx(400)
-            openText.text = "How many gifts would you like to open?"
-            openText.setTextColor(getColor(R.color.white))
-
-            val openEdit = EditText(this@MainService)
-            openEdit.height = dpToPx(50)
-            openEdit.width = dpToPx(400)
-            openEdit.y = dpToPxF(60)
-            openEdit.inputType = InputType.TYPE_CLASS_TEXT
-            openEdit.hint = "Enter amount"
-            openEdit.setHintTextColor(getColor(R.color.white))
-            openEdit.setTextColor(getColor(R.color.white))
-
-            val openButton = Button(this@MainService)
-            openButton.height = dpToPx(50)
-            openButton.width = dpToPx(400)
-            openButton.y = dpToPxF(120)
-            openButton.text = "Start"
-            openButton.setOnClickListener {
-                val limit: Int? = openEdit.text.toString().toIntOrNull()
-                if (limit != null) {
-                    removeViews()
+            if (this@MainService::scope.isInitialized && scope.isActive) {
+                scope.cancel()
+                CoroutineScope(Dispatchers.Default).launch {
                     if (!Python.isStarted()) {
                         Python.start(AndroidPlatform(this@MainService))
                     }
 
                     val py = Python.getInstance()
                     val module = py.getModule("control")
-                    module.callAttr("runConnect", filesDir)
-                    module.callAttr("runOpen", limit)
-
-                    addView(openLayout, 1, 60, 80, null, 50)
-                    addView(sendLayout, 0, 60, 80, null, 50)
+                    module.callAttr("runStop")
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@MainService, "Stopped", Toast.LENGTH_SHORT).show()
+                    }
                 }
+            } else {
+                val openPopupGradient = GradientDrawable()
+                openPopupGradient.cornerRadii = floatArrayOf(30f, 30f, 30f, 30f, 30f, 30f, 30f, 30f)
+                openPopupGradient.shape = GradientDrawable.RECTANGLE
+                openPopupGradient.setColor(getColor(R.color.grey))
+
+                openPopup = RelativeLayout(this@MainService)
+                openPopup.background = openPopupGradient
+
+                val openText = TextView(this@MainService)
+                openText.height = dpToPx(50)
+                openText.width = dpToPx(400)
+                openText.text = "How many gifts would you like to open?"
+                openText.setTextColor(getColor(R.color.white))
+
+                val openEdit = EditText(this@MainService)
+                openEdit.height = dpToPx(50)
+                openEdit.width = dpToPx(400)
+                openEdit.y = dpToPxF(60)
+                openEdit.inputType = InputType.TYPE_CLASS_TEXT
+                openEdit.hint = "Enter amount"
+                openEdit.setHintTextColor(getColor(R.color.white))
+                openEdit.setTextColor(getColor(R.color.white))
+
+                val openButton = Button(this@MainService)
+                openButton.height = dpToPx(50)
+                openButton.width = dpToPx(400)
+                openButton.y = dpToPxF(120)
+                openButton.text = "Start"
+                openButton.setOnClickListener {
+                    val limit: Int? = openEdit.text.toString().toIntOrNull()
+                    if (limit != null) {
+                        if (this@MainService::openPopup.isInitialized && openPopup.windowToken != null) {
+                            windowManager.removeViewImmediate(openPopup)
+                        }
+                        scope = CoroutineScope(Dispatchers.Default).launch {
+                            if (!Python.isStarted()) {
+                                Python.start(AndroidPlatform(this@MainService))
+                            }
+
+                            val py = Python.getInstance()
+                            val module = py.getModule("control")
+                            module.callAttr("runConnect", filesDir)
+                            module.callAttr("runOpenThread", limit)
+                        }
+                    }
+                }
+
+                openPopup.addView(openText)
+                openPopup.addView(openEdit)
+                openPopup.addView(openButton)
+
+                addView(openPopup, 2, 400, 400, null, null)
             }
-
-            openPopup.addView(openText)
-            openPopup.addView(openEdit)
-            openPopup.addView(openButton)
-
-            removeViews()
-            addView(openPopup, 2, 400, 400, null, null)
         }
 
         // Send View
@@ -167,12 +187,27 @@ class MainService : Service() {
 
         sendLayout.addView(sendLayoutText)
         sendLayout.setOnClickListener {
-            Toast.makeText(this@MainService, "Sending In Development", Toast.LENGTH_SHORT).show()
+            if (this@MainService::scope.isInitialized && scope.isActive) {
+                scope.cancel()
+                CoroutineScope(Dispatchers.Default).launch {
+                    if (!Python.isStarted()) {
+                        Python.start(AndroidPlatform(this@MainService))
+                    }
+
+                    val py = Python.getInstance()
+                    val module = py.getModule("control")
+                    module.callAttr("runStop")
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@MainService, "Stopped", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } else {
+                Toast.makeText(this@MainService, "Sending In Development", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // Add Views
 
-        removeViews()
         addView(openLayout, 1, 60, 80, null, 50)
         addView(sendLayout, 0, 60, 80, null, 50)
 
@@ -191,10 +226,6 @@ class MainService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        removeViews()
-    }
-
-    private fun removeViews() {
         if (this@MainService::openLayout.isInitialized && openLayout.windowToken != null) {
             windowManager.removeViewImmediate(openLayout)
         }
