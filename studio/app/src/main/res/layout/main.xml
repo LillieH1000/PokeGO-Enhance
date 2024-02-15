@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/black">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="PokeGo Touch"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:gravity="center"
+        tools:ignore="HardcodedText" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <TextView
+        android:id="@+id/notificationPermission"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notification Permission Required"
+        android:textColor="@color/white"
+        android:gravity="center"
+        tools:ignore="HardcodedText" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="5dp" />
+    <Button
+        android:id="@+id/notificationPermissionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Request Permission"
+        android:textAllCaps="false"
+        tools:ignore="HardcodedText" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <TextView
+        android:id="@+id/displayOverOtherAppsPermission"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Display Over Other Apps Permission Required"
+        android:textColor="@color/white"
+        android:gravity="center"
+        tools:ignore="HardcodedText" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="5dp" />
+    <Button
+        android:id="@+id/displayOverOtherAppsPermissionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Request Permission"
+        android:textAllCaps="false"
+        tools:ignore="HardcodedText" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <TextView
+        android:id="@+id/usbDebuggingPermission"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="USB Debugging Required"
+        android:textColor="@color/white"
+        android:gravity="center"
+        tools:ignore="HardcodedText" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="5dp" />
+    <Button
+        android:id="@+id/usbDebuggingPermissionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Request Permission"
+        android:textAllCaps="false"
+        tools:ignore="HardcodedText" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+
+    <Button
+        android:id="@+id/launchPokemonGOButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Launch Pokemon GO"
+        android:textAllCaps="false"
+        android:visibility="gone"
+        tools:ignore="HardcodedText" />
+
+</LinearLayout>

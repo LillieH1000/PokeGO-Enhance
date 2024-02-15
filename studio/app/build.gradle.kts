@@ -60,7 +60,6 @@ chaquopy {
         }
         pip {
             install("adb-shell")
-            install("adb-shell[async]")
         }
     }
 }
