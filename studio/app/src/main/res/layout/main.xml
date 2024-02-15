@@ -71,10 +71,10 @@
         android:layout_height="40dp" />
 
     <TextView
-        android:id="@+id/usbDebuggingPermission"
+        android:id="@+id/accessibilityPermission"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="USB Debugging Permission Required"
+        android:text="Accessibility Permission Required"
         android:textColor="@color/white"
         android:gravity="center"
         tools:ignore="HardcodedText" />
@@ -82,7 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="5dp" />
     <Button
-        android:id="@+id/usbDebuggingPermissionButton"
+        android:id="@+id/accessibilityPermissionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Request Permission"

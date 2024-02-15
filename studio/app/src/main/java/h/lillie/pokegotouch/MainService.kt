@@ -1,53 +1,45 @@
 package h.lillie.pokegotouch
 
+import android.accessibilityservice.AccessibilityService
+import android.accessibilityservice.GestureDescription
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.Service
 import android.content.Context
-import android.content.Intent
 import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+import android.graphics.Path
 import android.graphics.PixelFormat
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
-import android.os.IBinder
 import android.text.InputType
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import android.view.accessibility.AccessibilityEvent
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
-import com.chaquo.python.Python
-import com.chaquo.python.android.AndroidPlatform
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @SuppressLint("SetTextI18n")
-class MainService : Service() {
+class MainService : AccessibilityService() {
     private lateinit var windowManager: WindowManager
     private lateinit var scope: Job
 
     private lateinit var openLayout: RelativeLayout
     private lateinit var openPopup: RelativeLayout
-
     private lateinit var sendLayout: RelativeLayout
-
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        return START_NOT_STICKY
-    }
 
     override fun onCreate() {
         super.onCreate()
@@ -101,13 +93,6 @@ class MainService : Service() {
             if (this@MainService::scope.isInitialized && scope.isActive) {
                 scope.cancel()
                 CoroutineScope(Dispatchers.Default).launch {
-                    if (!Python.isStarted()) {
-                        Python.start(AndroidPlatform(this@MainService))
-                    }
-
-                    val py = Python.getInstance()
-                    val module = py.getModule("control")
-                    module.callAttr("runStop")
                     withContext(Dispatchers.Main) {
                         Toast.makeText(this@MainService, "Stopped", Toast.LENGTH_SHORT).show()
                     }
@@ -142,22 +127,48 @@ class MainService : Service() {
                 openButton.y = dpToPxF(120)
                 openButton.text = "Start"
                 openButton.setOnClickListener {
-                    val limit: Int? = openEdit.text.toString().toIntOrNull()
-                    if (limit != null) {
+                    // val limit: Int? = openEdit.text.toString().toIntOrNull()
+                    // if (limit != null) {
                         if (this@MainService::openPopup.isInitialized && openPopup.windowToken != null) {
                             windowManager.removeViewImmediate(openPopup)
                         }
                         scope = CoroutineScope(Dispatchers.Default).launch {
-                            if (!Python.isStarted()) {
-                                Python.start(AndroidPlatform(this@MainService))
-                            }
+                            val path = Path()
 
-                            val py = Python.getInstance()
-                            val module = py.getModule("control")
-                            module.callAttr("runConnect", filesDir)
-                            module.callAttr("runOpenThread", limit)
+                            path.moveTo(688f, 939f)
+                            dispatchGesture(GestureDescription.Builder()
+                                .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                .build(), null, null)
+
+                            delay(3000)
+
+                            path.moveTo(540f, 1599f)
+                            dispatchGesture(GestureDescription.Builder()
+                                .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                .build(), null, null)
+
+                            delay(3000)
+
+                            path.moveTo(548f, 2010f)
+                            dispatchGesture(GestureDescription.Builder()
+                                .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                .build(), null, null)
+
+                            delay(1000)
+
+                            path.moveTo(545f, 2191f)
+                            dispatchGesture(GestureDescription.Builder()
+                                .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                .build(), null, null)
+
+                            delay(3000)
+
+                            path.moveTo(545f, 2191f)
+                            dispatchGesture(GestureDescription.Builder()
+                                .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                .build(), null, null)
                         }
-                    }
+                    // }
                 }
 
                 openPopup.addView(openText)
@@ -190,13 +201,6 @@ class MainService : Service() {
             if (this@MainService::scope.isInitialized && scope.isActive) {
                 scope.cancel()
                 CoroutineScope(Dispatchers.Default).launch {
-                    if (!Python.isStarted()) {
-                        Python.start(AndroidPlatform(this@MainService))
-                    }
-
-                    val py = Python.getInstance()
-                    val module = py.getModule("control")
-                    module.callAttr("runStop")
                     withContext(Dispatchers.Main) {
                         Toast.makeText(this@MainService, "Stopped", Toast.LENGTH_SHORT).show()
                     }
@@ -205,36 +209,39 @@ class MainService : Service() {
                 Toast.makeText(this@MainService, "Sending In Development", Toast.LENGTH_SHORT).show()
             }
         }
+    }
 
-        // Add Views
-
-        addView(openLayout, 1, 60, 80, null, 50)
-        addView(sendLayout, 0, 60, 80, null, 50)
-
-        // Launch Pokemon GO
-
-        val pokemonGOIntent: Intent? = packageManager.getLaunchIntentForPackage("com.nianticlabs.pokemongo")
-        if (pokemonGOIntent != null) {
-            startActivity(pokemonGOIntent)
+    override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+        if (event != null) {
+            Log.d("Triggered", event.toString())
+            if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED &&
+                event.contentChangeTypes == AccessibilityEvent.CONTENT_CHANGE_TYPE_UNDEFINED &&
+                event.packageName != "h.lillie.pokegotouch" &&
+                event.packageName == "com.nianticlabs.pokemongo") {
+                if (this@MainService::openLayout.isInitialized && openLayout.parent == null) {
+                    addView(openLayout, 1, 60, 80, null, 50)
+                }
+                if (this@MainService::sendLayout.isInitialized && sendLayout.parent == null) {
+                    addView(sendLayout, 0, 60, 80, null, 50)
+                }
+            } else if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED &&
+                event.contentChangeTypes == AccessibilityEvent.CONTENT_CHANGE_TYPE_UNDEFINED &&
+                event.packageName != "h.lillie.pokegotouch" &&
+                event.packageName != "com.nianticlabs.pokemongo") {
+                if (this@MainService::openLayout.isInitialized && openLayout.windowToken != null) {
+                    windowManager.removeViewImmediate(openLayout)
+                }
+                if (this@MainService::openPopup.isInitialized && openPopup.windowToken != null) {
+                    windowManager.removeViewImmediate(openPopup)
+                }
+                if (this@MainService::sendLayout.isInitialized && sendLayout.windowToken != null) {
+                    windowManager.removeViewImmediate(sendLayout)
+                }
+            }
         }
     }
 
-    override fun onTaskRemoved(rootIntent: Intent?) {
-        super.onTaskRemoved(rootIntent)
-        stopSelf()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (this@MainService::openLayout.isInitialized && openLayout.windowToken != null) {
-            windowManager.removeViewImmediate(openLayout)
-        }
-        if (this@MainService::openPopup.isInitialized && openPopup.windowToken != null) {
-            windowManager.removeViewImmediate(openPopup)
-        }
-        if (this@MainService::sendLayout.isInitialized && sendLayout.windowToken != null) {
-            windowManager.removeViewImmediate(sendLayout)
-        }
+    override fun onInterrupt() {
     }
 
     private fun addView(view: View, align: Int?, height: Int?, width: Int?, x: Int?, y: Int?) {
@@ -278,5 +285,17 @@ class MainService : Service() {
 
     private fun dpToPxF(dp: Int) : Float {
         return dp * (this@MainService.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    }
+
+    private val accessibilityCallback = object : GestureResultCallback() {
+        override fun onCompleted(gestureDescription: GestureDescription?) {
+            super.onCompleted(gestureDescription)
+            Log.d("Gesture", "Completed")
+        }
+
+        override fun onCancelled(gestureDescription: GestureDescription?) {
+            super.onCancelled(gestureDescription)
+            Log.d("Gesture", "Cancelled")
+        }
     }
 }

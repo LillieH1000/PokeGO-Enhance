@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.chaquo.python")
 }
 
 android {
@@ -19,10 +18,6 @@ android {
         versionName = "1.0.0"
         vectorDrawables {
             useSupportLibrary = true
-        }
-        ndk {
-            // noinspection ChromeOsAbiSupport
-            abiFilters += listOf("arm64-v8a", "x86_64")
         }
     }
 
@@ -49,17 +44,6 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-}
-
-chaquopy {
-    defaultConfig {
-        pyc {
-            src = false
-        }
-        pip {
-            install("adb-shell")
         }
     }
 }

@@ -7,8 +7,6 @@ import android.provider.Settings
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.chaquo.python.Python
-import com.chaquo.python.android.AndroidPlatform
 
 class Main : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,21 +20,16 @@ class Main : AppCompatActivity() {
 
         val displayOverOtherAppsPermissionButton: Button = findViewById(R.id.displayOverOtherAppsPermissionButton)
         displayOverOtherAppsPermissionButton.setOnClickListener {
-            startActivity(Intent(
-                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:$packageName")
-            ))
+            val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
         }
 
-        val usbDebuggingPermissionButton: Button = findViewById(R.id.usbDebuggingPermissionButton)
-        usbDebuggingPermissionButton.setOnClickListener {
-            if (!Python.isStarted()) {
-                Python.start(AndroidPlatform(this@Main))
-            }
-
-            val py = Python.getInstance()
-            val module = py.getModule("control")
-            module.callAttr("runConnect", filesDir)
+        val accessibilityPermissionButton: Button = findViewById(R.id.accessibilityPermissionButton)
+        accessibilityPermissionButton.setOnClickListener {
+            val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
         }
 
         val launchPokemonGOButton: Button = findViewById(R.id.launchPokemonGOButton)
@@ -45,13 +38,9 @@ class Main : AppCompatActivity() {
             launchPokemonGOButton.visibility = View.VISIBLE
         }
         launchPokemonGOButton.setOnClickListener {
-            startForegroundService(Intent(this@Main, MainService::class.java))
+            if (pokemonGOIntent != null) {
+                startActivity(pokemonGOIntent)
+            }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        stopService(Intent(this@Main, MainService::class.java))
-        finishAffinity()
     }
 }
