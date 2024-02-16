@@ -29,6 +29,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -133,40 +134,42 @@ class MainService : AccessibilityService() {
                             windowManager.removeViewImmediate(openPopup)
                         }
                         scope = CoroutineScope(Dispatchers.Default).launch {
-                            val path = Path()
+                            while (isActive) {
+                                val path = Path()
 
-                            path.moveTo(688f, 939f)
-                            dispatchGesture(GestureDescription.Builder()
-                                .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                .build(), null, null)
+                                path.moveTo(688f, 939f)
+                                dispatchGesture(GestureDescription.Builder()
+                                    .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                    .build(), null, null)
 
-                            delay(3000)
+                                delay(3000)
 
-                            path.moveTo(540f, 1599f)
-                            dispatchGesture(GestureDescription.Builder()
-                                .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                .build(), null, null)
+                                path.moveTo(540f, 1599f)
+                                dispatchGesture(GestureDescription.Builder()
+                                    .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                    .build(), null, null)
 
-                            delay(3000)
+                                delay(3000)
 
-                            path.moveTo(548f, 2010f)
-                            dispatchGesture(GestureDescription.Builder()
-                                .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                .build(), null, null)
+                                path.moveTo(548f, 2010f)
+                                dispatchGesture(GestureDescription.Builder()
+                                    .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                    .build(), null, null)
 
-                            delay(1000)
+                                delay(1000)
 
-                            path.moveTo(545f, 2191f)
-                            dispatchGesture(GestureDescription.Builder()
-                                .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                .build(), null, null)
+                                path.moveTo(545f, 2191f)
+                                dispatchGesture(GestureDescription.Builder()
+                                    .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                    .build(), null, null)
 
-                            delay(3000)
+                                delay(3000)
 
-                            path.moveTo(545f, 2191f)
-                            dispatchGesture(GestureDescription.Builder()
-                                .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                .build(), null, null)
+                                path.moveTo(545f, 2191f)
+                                dispatchGesture(GestureDescription.Builder()
+                                    .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                    .build(), null, null)
+                            }
                         }
                     // }
                 }
