@@ -6,7 +6,11 @@ import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
 import android.graphics.Path
 import android.graphics.PixelFormat
@@ -14,13 +18,13 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.text.InputType
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -39,7 +43,7 @@ class MainService : AccessibilityService() {
     private lateinit var scope: Job
 
     private lateinit var openLayout: RelativeLayout
-    private lateinit var openPopup: RelativeLayout
+    private lateinit var openPopup: LinearLayout
     private lateinit var sendLayout: RelativeLayout
 
     override fun onCreate() {
@@ -54,11 +58,23 @@ class MainService : AccessibilityService() {
         notificationManager.createNotificationChannel(notificationChannel)
 
         val notification: Notification = NotificationCompat.Builder(this@MainService, "PokeGOTouchNotificationChannelID")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle("PokeGO Touch")
-            .setContentText("Running")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .addAction(0, "Show Overlay",
+                PendingIntent.getBroadcast(this@MainService,
+                    1,
+                    Intent().setAction("showOverlay"),
+                    PendingIntent.FLAG_IMMUTABLE))
+            .addAction(0, "Hide Overlay",
+                PendingIntent.getBroadcast(this@MainService,
+                    1,
+                    Intent().setAction("hideOverlay"),
+                    PendingIntent.FLAG_IMMUTABLE))
             .build()
+
+        registerReceiver(broadcastReceiver, IntentFilter("showOverlay"), RECEIVER_NOT_EXPORTED)
+        registerReceiver(broadcastReceiver, IntentFilter("hideOverlay"), RECEIVER_NOT_EXPORTED)
 
         // Foreground And Notification
 
@@ -98,25 +114,28 @@ class MainService : AccessibilityService() {
                         Toast.makeText(this@MainService, "Stopped", Toast.LENGTH_SHORT).show()
                     }
                 }
+            } else if (this@MainService::openPopup.isInitialized && openPopup.parent != null) {
+                windowManager.removeViewImmediate(openPopup)
             } else {
                 val openPopupGradient = GradientDrawable()
                 openPopupGradient.cornerRadii = floatArrayOf(30f, 30f, 30f, 30f, 30f, 30f, 30f, 30f)
                 openPopupGradient.shape = GradientDrawable.RECTANGLE
                 openPopupGradient.setColor(getColor(R.color.grey))
 
-                openPopup = RelativeLayout(this@MainService)
+                openPopup = LinearLayout(this@MainService)
+                openPopup.orientation = LinearLayout.VERTICAL
                 openPopup.background = openPopupGradient
 
                 val openText = TextView(this@MainService)
                 openText.height = dpToPx(50)
                 openText.width = dpToPx(400)
+                openText.gravity = Gravity.CENTER
                 openText.text = "How many gifts would you like to open?"
                 openText.setTextColor(getColor(R.color.white))
 
                 val openEdit = EditText(this@MainService)
                 openEdit.height = dpToPx(50)
                 openEdit.width = dpToPx(400)
-                openEdit.y = dpToPxF(60)
                 openEdit.inputType = InputType.TYPE_CLASS_TEXT
                 openEdit.hint = "Enter amount"
                 openEdit.setHintTextColor(getColor(R.color.white))
@@ -125,60 +144,106 @@ class MainService : AccessibilityService() {
                 val openButton = Button(this@MainService)
                 openButton.height = dpToPx(50)
                 openButton.width = dpToPx(400)
-                openButton.y = dpToPxF(120)
                 openButton.text = "Start"
                 openButton.setOnClickListener {
-                    // val limit: Int? = openEdit.text.toString().toIntOrNull()
-                    // if (limit != null) {
-                        if (this@MainService::openPopup.isInitialized && openPopup.windowToken != null) {
+                    val limit: Int? = openEdit.text.toString().toIntOrNull()
+                    if (limit != null) {
+                        if (this@MainService::openPopup.isInitialized && openPopup.parent != null) {
                             windowManager.removeViewImmediate(openPopup)
                         }
                         scope = CoroutineScope(Dispatchers.Default).launch {
                             while (isActive) {
-                                val path = Path()
+                                suspend fun open(x: Float, y: Float) {
+                                    val path = Path()
 
-                                path.moveTo(688f, 939f)
-                                dispatchGesture(GestureDescription.Builder()
-                                    .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                    .build(), null, null)
+                                    path.reset()
+                                    path.moveTo(x, y)
+                                    dispatchGesture(GestureDescription.Builder()
+                                        .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                        .build(), null, null)
 
-                                delay(3000)
+                                    delay(3000)
 
-                                path.moveTo(540f, 1599f)
-                                dispatchGesture(GestureDescription.Builder()
-                                    .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                    .build(), null, null)
+                                    path.reset()
+                                    path.moveTo(540f, 1599f)
+                                    dispatchGesture(GestureDescription.Builder()
+                                        .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                        .build(), null, null)
 
-                                delay(3000)
+                                    delay(3000)
 
-                                path.moveTo(548f, 2010f)
-                                dispatchGesture(GestureDescription.Builder()
-                                    .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                    .build(), null, null)
+                                    path.reset()
+                                    path.moveTo(548f, 2010f)
+                                    dispatchGesture(GestureDescription.Builder()
+                                        .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                        .build(), null, null)
 
-                                delay(1000)
+                                    delay(1000)
 
-                                path.moveTo(545f, 2191f)
-                                dispatchGesture(GestureDescription.Builder()
-                                    .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                    .build(), null, null)
+                                    path.reset()
+                                    path.moveTo(545f, 2191f)
+                                    dispatchGesture(GestureDescription.Builder()
+                                        .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                        .build(), null, null)
 
-                                delay(3000)
+                                    delay(3000)
 
-                                path.moveTo(545f, 2191f)
-                                dispatchGesture(GestureDescription.Builder()
-                                    .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                    .build(), null, null)
+                                    path.reset()
+                                    path.moveTo(545f, 2191f)
+                                    dispatchGesture(GestureDescription.Builder()
+                                        .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                        .build(), null, null)
+                                }
+
+                                var openLimit = 0
+
+                                // Friend 1
+                                open(688f, 939f)
+                                openLimit += 1
+                                if (openLimit == limit) {
+                                    scope.cancel()
+                                }
+
+                                // Friend 2
+                                open(526f, 1296f)
+                                openLimit += 1
+                                if (openLimit == limit) {
+                                    scope.cancel()
+                                }
+
+                                // Friend 3
+                                open(602f, 1604f)
+                                openLimit += 1
+                                if (openLimit == limit) {
+                                    scope.cancel()
+                                }
+
+                                // Friend 4
+                                open(569f, 1991f)
+                                openLimit += 1
+                                if (openLimit == limit) {
+                                    scope.cancel()
+                                } else {
+                                    val scrollPath = Path()
+                                    scrollPath.reset()
+                                    scrollPath.moveTo(250f, 1000f)
+                                    scrollPath.lineTo(250f, 500f)
+                                    dispatchGesture(GestureDescription.Builder()
+                                        .addStroke(GestureDescription.StrokeDescription(scrollPath, 0, 500))
+                                        .build(), null, null)
+
+                                    delay(1000)
+                                }
                             }
                         }
-                    // }
+                    }
                 }
 
                 openPopup.addView(openText)
                 openPopup.addView(openEdit)
                 openPopup.addView(openButton)
 
-                addView(openPopup, 2, 400, 400, null, null)
+                addView(openPopup, 2, 170, 400, null, null)
             }
         }
 
@@ -215,33 +280,6 @@ class MainService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        if (event != null) {
-            Log.d("Triggered", event.toString())
-            if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED &&
-                event.contentChangeTypes == AccessibilityEvent.CONTENT_CHANGE_TYPE_UNDEFINED &&
-                event.packageName != "h.lillie.pokegotouch" &&
-                event.packageName == "com.nianticlabs.pokemongo") {
-                if (this@MainService::openLayout.isInitialized && openLayout.parent == null) {
-                    addView(openLayout, 1, 60, 80, null, 50)
-                }
-                if (this@MainService::sendLayout.isInitialized && sendLayout.parent == null) {
-                    addView(sendLayout, 0, 60, 80, null, 50)
-                }
-            } else if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED &&
-                event.contentChangeTypes == AccessibilityEvent.CONTENT_CHANGE_TYPE_UNDEFINED &&
-                event.packageName != "h.lillie.pokegotouch" &&
-                event.packageName != "com.nianticlabs.pokemongo") {
-                if (this@MainService::openLayout.isInitialized && openLayout.windowToken != null) {
-                    windowManager.removeViewImmediate(openLayout)
-                }
-                if (this@MainService::openPopup.isInitialized && openPopup.windowToken != null) {
-                    windowManager.removeViewImmediate(openPopup)
-                }
-                if (this@MainService::sendLayout.isInitialized && sendLayout.windowToken != null) {
-                    windowManager.removeViewImmediate(sendLayout)
-                }
-            }
-        }
     }
 
     override fun onInterrupt() {
@@ -286,19 +324,27 @@ class MainService : AccessibilityService() {
         return dp * (this@MainService.resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
     }
 
-    private fun dpToPxF(dp: Int) : Float {
-        return dp * (this@MainService.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-    }
+    private val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent != null) {
+                if (intent.action == "showOverlay") {
+                    if (this@MainService::openLayout.isInitialized && openLayout.parent == null) {
+                        addView(openLayout, 1, 60, 80, null, 50)
+                    }
+                    if (this@MainService::sendLayout.isInitialized && sendLayout.parent == null) {
+                        addView(sendLayout, 0, 60, 80, null, 50)
+                    }
+                }
 
-    private val accessibilityCallback = object : GestureResultCallback() {
-        override fun onCompleted(gestureDescription: GestureDescription?) {
-            super.onCompleted(gestureDescription)
-            Log.d("Gesture", "Completed")
-        }
-
-        override fun onCancelled(gestureDescription: GestureDescription?) {
-            super.onCancelled(gestureDescription)
-            Log.d("Gesture", "Cancelled")
+                if (intent.action == "hideOverlay") {
+                    if (this@MainService::openLayout.isInitialized && openLayout.parent != null) {
+                        windowManager.removeViewImmediate(openLayout)
+                    }
+                    if (this@MainService::sendLayout.isInitialized && sendLayout.parent != null) {
+                        windowManager.removeViewImmediate(sendLayout)
+                    }
+                }
+            }
         }
     }
 }
