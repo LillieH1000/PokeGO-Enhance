@@ -26,6 +26,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
@@ -38,7 +39,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@SuppressLint("SetTextI18n")
+@SuppressLint("SetTextI18n", "UseSwitchCompatOrMaterialCode")
 class MainService : AccessibilityService() {
     private lateinit var windowManager: WindowManager
     private lateinit var scope: Job
@@ -46,6 +47,7 @@ class MainService : AccessibilityService() {
     private lateinit var openLayout: RelativeLayout
     private lateinit var openPopup: LinearLayout
     private lateinit var sendLayout: RelativeLayout
+    private lateinit var sendPopup: LinearLayout
 
     override fun onCreate() {
         super.onCreate()
@@ -117,6 +119,8 @@ class MainService : AccessibilityService() {
                 }
             } else if (this@MainService::openPopup.isInitialized && openPopup.parent != null) {
                 windowManager.removeViewImmediate(openPopup)
+            } else if (this@MainService::sendPopup.isInitialized && sendPopup.parent != null) {
+                windowManager.removeViewImmediate(sendPopup)
             } else {
                 val openPopupGradient = GradientDrawable()
                 openPopupGradient.cornerRadii = floatArrayOf(30f, 30f, 30f, 30f, 30f, 30f, 30f, 30f)
@@ -270,8 +274,162 @@ class MainService : AccessibilityService() {
                         Toast.makeText(this@MainService, "Stopped", Toast.LENGTH_SHORT).show()
                     }
                 }
+            } else if (this@MainService::openPopup.isInitialized && openPopup.parent != null) {
+                windowManager.removeViewImmediate(openPopup)
+            } else if (this@MainService::sendPopup.isInitialized && sendPopup.parent != null) {
+                windowManager.removeViewImmediate(sendPopup)
             } else {
-                Toast.makeText(this@MainService, "Sending In Development", Toast.LENGTH_SHORT).show()
+                val sendPopupGradient = GradientDrawable()
+                sendPopupGradient.cornerRadii = floatArrayOf(30f, 30f, 30f, 30f, 30f, 30f, 30f, 30f)
+                sendPopupGradient.shape = GradientDrawable.RECTANGLE
+                sendPopupGradient.setColor(getColor(R.color.grey))
+
+                sendPopup = LinearLayout(this@MainService)
+                sendPopup.orientation = LinearLayout.VERTICAL
+                sendPopup.background = sendPopupGradient
+
+                val sendText = TextView(this@MainService)
+                sendText.height = dpToPx(50)
+                sendText.width = dpToPx(400)
+                sendText.gravity = Gravity.CENTER
+                sendText.text = "How many gifts would you like to send?"
+                sendText.setTextColor(getColor(R.color.white))
+
+                val sendEdit = EditText(this@MainService)
+                sendEdit.height = dpToPx(50)
+                sendEdit.width = dpToPx(400)
+                sendEdit.inputType = InputType.TYPE_CLASS_TEXT
+                sendEdit.hint = "Enter amount"
+                sendEdit.setHintTextColor(getColor(R.color.white))
+                sendEdit.setTextColor(getColor(R.color.white))
+
+                val sendGiftsText = TextView(this@MainService)
+                sendGiftsText.height = dpToPx(50)
+                sendGiftsText.width = dpToPx(400)
+                sendGiftsText.gravity = Gravity.CENTER
+                sendGiftsText.text = "Does the top of the list have gifts?"
+                sendGiftsText.setTextColor(getColor(R.color.white))
+
+                val sendGiftsSwitch = Switch(this@MainService)
+
+                val sendButton = Button(this@MainService)
+                sendButton.height = dpToPx(50)
+                sendButton.width = dpToPx(400)
+                sendButton.text = "Start"
+                sendButton.setOnClickListener {
+                    val limit: Int? = sendEdit.text.toString().toIntOrNull()
+                    if (limit != null) {
+                        val switchChecked: Boolean = sendGiftsSwitch.isChecked
+                        if (this@MainService::sendPopup.isInitialized && sendPopup.parent != null) {
+                            windowManager.removeViewImmediate(sendPopup)
+                        }
+                        scope = CoroutineScope(Dispatchers.Default).launch {
+                            while (isActive) {
+                                suspend fun send(x: Float, y: Float) = withContext(Dispatchers.Default) {
+                                    val path = Path()
+
+                                    path.reset()
+                                    path.moveTo(x, y)
+                                    dispatchGesture(GestureDescription.Builder()
+                                        .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                        .build(), null, null)
+                                    delay(3000)
+
+                                    if (switchChecked) {
+                                        path.reset()
+                                        path.moveTo(545f, 2191f)
+                                        dispatchGesture(GestureDescription.Builder()
+                                            .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                            .build(), null, null)
+                                        delay(3000)
+                                    }
+
+                                    path.reset()
+                                    path.moveTo(283f, 1802f)
+                                    dispatchGesture(GestureDescription.Builder()
+                                        .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                        .build(), null, null)
+                                    delay(3000)
+
+                                    path.reset()
+                                    path.moveTo(626f, 847f)
+                                    dispatchGesture(GestureDescription.Builder()
+                                        .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                        .build(), null, null)
+                                    delay(3000)
+
+                                    path.reset()
+                                    path.moveTo(544f, 1989f)
+                                    dispatchGesture(GestureDescription.Builder()
+                                        .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                        .build(), null, null)
+                                    delay(1000)
+
+                                    path.reset()
+                                    path.moveTo(545f, 2191f)
+                                    dispatchGesture(GestureDescription.Builder()
+                                        .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                        .build(), null, null)
+                                    delay(3000)
+
+                                    path.reset()
+                                    path.moveTo(545f, 2191f)
+                                    dispatchGesture(GestureDescription.Builder()
+                                        .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
+                                        .build(), null, null)
+                                    delay(3000)
+                                }
+
+                                var sendLimit = 0
+
+                                // Friend 1
+                                send(688f, 939f)
+                                sendLimit += 1
+                                if (sendLimit == limit) {
+                                    scope.cancelAndJoin()
+                                }
+
+                                // Friend 2
+                                send(526f, 1296f)
+                                sendLimit += 1
+                                if (sendLimit == limit) {
+                                    scope.cancelAndJoin()
+                                }
+
+                                // Friend 3
+                                send(602f, 1604f)
+                                sendLimit += 1
+                                if (sendLimit == limit) {
+                                    scope.cancelAndJoin()
+                                }
+
+                                // Friend 4
+                                send(569f, 1991f)
+                                sendLimit += 1
+                                if (sendLimit == limit) {
+                                    scope.cancelAndJoin()
+                                } else {
+                                    val scrollPath = Path()
+                                    scrollPath.reset()
+                                    scrollPath.moveTo(250f, 1000f)
+                                    scrollPath.lineTo(250f, 500f)
+                                    dispatchGesture(GestureDescription.Builder()
+                                        .addStroke(GestureDescription.StrokeDescription(scrollPath, 0, 500))
+                                        .build(), null, null)
+                                    delay(1000)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                sendPopup.addView(sendText)
+                sendPopup.addView(sendEdit)
+                sendPopup.addView(sendGiftsText)
+                sendPopup.addView(sendGiftsSwitch)
+                sendPopup.addView(sendButton)
+
+                addView(sendPopup, 2, 270, 400, null, null)
             }
         }
     }
@@ -337,8 +495,14 @@ class MainService : AccessibilityService() {
                     if (this@MainService::openLayout.isInitialized && openLayout.parent != null) {
                         windowManager.removeViewImmediate(openLayout)
                     }
+                    if (this@MainService::openPopup.isInitialized && openPopup.parent != null) {
+                        windowManager.removeViewImmediate(openPopup)
+                    }
                     if (this@MainService::sendLayout.isInitialized && sendLayout.parent != null) {
                         windowManager.removeViewImmediate(sendLayout)
+                    }
+                    if (this@MainService::sendPopup.isInitialized && sendPopup.parent != null) {
+                        windowManager.removeViewImmediate(sendPopup)
                     }
                 }
             }
