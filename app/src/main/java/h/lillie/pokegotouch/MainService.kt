@@ -33,9 +33,8 @@ import androidx.core.app.NotificationCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -122,11 +121,13 @@ class MainService : AccessibilityService() {
                 openButton.setOnClickListener {
                     val limit: Int? = openEdit.text.toString().toIntOrNull()
                     if (limit != null && limit > 0) {
+                        var openLimit = 0
                         if (this@MainService::openPopup.isInitialized && openPopup.parent != null) {
                             windowManager.removeViewImmediate(openPopup)
                         }
                         scope = CoroutineScope(Dispatchers.Default).launch {
-                            while (isActive) {
+                            while (true) {
+                                ensureActive()
                                 suspend fun open(x: Float, y: Float) = withContext(Dispatchers.Default) {
                                     val path = Path()
 
@@ -166,34 +167,32 @@ class MainService : AccessibilityService() {
                                     delay(3000)
                                 }
 
-                                var openLimit = 0
-
                                 // Friend 1
                                 open(688f, 939f)
                                 openLimit += 1
                                 if (openLimit == limit) {
-                                    scope.cancelAndJoin()
+                                    scope.cancel()
                                 }
 
                                 // Friend 2
                                 open(526f, 1296f)
                                 openLimit += 1
                                 if (openLimit == limit) {
-                                    scope.cancelAndJoin()
+                                    scope.cancel()
                                 }
 
                                 // Friend 3
                                 open(602f, 1604f)
                                 openLimit += 1
                                 if (openLimit == limit) {
-                                    scope.cancelAndJoin()
+                                    scope.cancel()
                                 }
 
                                 // Friend 4
                                 open(569f, 1991f)
                                 openLimit += 1
                                 if (openLimit == limit) {
-                                    scope.cancelAndJoin()
+                                    scope.cancel()
                                 } else {
                                     val scrollPath = Path()
                                     scrollPath.reset()
@@ -288,12 +287,14 @@ class MainService : AccessibilityService() {
                 sendButton.setOnClickListener {
                     val limit: Int? = sendEdit.text.toString().toIntOrNull()
                     if (limit != null && limit > 0) {
+                        var sendLimit = 0
                         val switchChecked: Boolean = sendGiftsSwitch.isChecked
                         if (this@MainService::sendPopup.isInitialized && sendPopup.parent != null) {
                             windowManager.removeViewImmediate(sendPopup)
                         }
                         scope = CoroutineScope(Dispatchers.Default).launch {
-                            while (isActive) {
+                            while (true) {
+                                ensureActive()
                                 suspend fun send(x: Float, y: Float) = withContext(Dispatchers.Default) {
                                     val path = Path()
 
@@ -349,34 +350,32 @@ class MainService : AccessibilityService() {
                                     delay(3000)
                                 }
 
-                                var sendLimit = 0
-
                                 // Friend 1
                                 send(688f, 939f)
                                 sendLimit += 1
                                 if (sendLimit == limit) {
-                                    scope.cancelAndJoin()
+                                    scope.cancel()
                                 }
 
                                 // Friend 2
                                 send(526f, 1296f)
                                 sendLimit += 1
                                 if (sendLimit == limit) {
-                                    scope.cancelAndJoin()
+                                    scope.cancel()
                                 }
 
                                 // Friend 3
                                 send(602f, 1604f)
                                 sendLimit += 1
                                 if (sendLimit == limit) {
-                                    scope.cancelAndJoin()
+                                    scope.cancel()
                                 }
 
                                 // Friend 4
                                 send(569f, 1991f)
                                 sendLimit += 1
                                 if (sendLimit == limit) {
-                                    scope.cancelAndJoin()
+                                    scope.cancel()
                                 } else {
                                     val scrollPath = Path()
                                     scrollPath.reset()
