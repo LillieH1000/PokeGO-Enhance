@@ -121,7 +121,7 @@ class MainService : AccessibilityService() {
                 openButton.text = "Start"
                 openButton.setOnClickListener {
                     val limit: Int? = openEdit.text.toString().toIntOrNull()
-                    if (limit != null) {
+                    if (limit != null && limit > 0) {
                         if (this@MainService::openPopup.isInitialized && openPopup.parent != null) {
                             windowManager.removeViewImmediate(openPopup)
                         }
@@ -287,7 +287,7 @@ class MainService : AccessibilityService() {
                 sendButton.text = "Start"
                 sendButton.setOnClickListener {
                     val limit: Int? = sendEdit.text.toString().toIntOrNull()
-                    if (limit != null) {
+                    if (limit != null && limit > 0) {
                         val switchChecked: Boolean = sendGiftsSwitch.isChecked
                         if (this@MainService::sendPopup.isInitialized && sendPopup.parent != null) {
                             windowManager.removeViewImmediate(sendPopup)
