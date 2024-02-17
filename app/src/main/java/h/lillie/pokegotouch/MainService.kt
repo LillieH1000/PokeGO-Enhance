@@ -231,7 +231,7 @@ class MainService : AccessibilityService() {
                                     scrollPath.moveTo(250f, 1000f)
                                     scrollPath.lineTo(250f, 500f)
                                     dispatchGesture(GestureDescription.Builder()
-                                        .addStroke(GestureDescription.StrokeDescription(scrollPath, 0, 500))
+                                        .addStroke(GestureDescription.StrokeDescription(scrollPath, 0, 400))
                                         .build(), null, null)
                                     delay(1000)
                                 }
@@ -414,7 +414,7 @@ class MainService : AccessibilityService() {
                                     scrollPath.moveTo(250f, 1000f)
                                     scrollPath.lineTo(250f, 500f)
                                     dispatchGesture(GestureDescription.Builder()
-                                        .addStroke(GestureDescription.StrokeDescription(scrollPath, 0, 500))
+                                        .addStroke(GestureDescription.StrokeDescription(scrollPath, 0, 400))
                                         .build(), null, null)
                                     delay(1000)
                                 }
