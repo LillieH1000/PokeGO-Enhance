@@ -32,6 +32,7 @@ import androidx.core.app.NotificationCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -153,7 +154,7 @@ class MainService : AccessibilityService() {
                         }
                         scope = CoroutineScope(Dispatchers.Default).launch {
                             while (isActive) {
-                                suspend fun open(x: Float, y: Float) {
+                                suspend fun open(x: Float, y: Float) = withContext(Dispatchers.Default) {
                                     val path = Path()
 
                                     path.reset()
@@ -161,7 +162,6 @@ class MainService : AccessibilityService() {
                                     dispatchGesture(GestureDescription.Builder()
                                         .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
                                         .build(), null, null)
-
                                     delay(3000)
 
                                     path.reset()
@@ -169,7 +169,6 @@ class MainService : AccessibilityService() {
                                     dispatchGesture(GestureDescription.Builder()
                                         .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
                                         .build(), null, null)
-
                                     delay(3000)
 
                                     path.reset()
@@ -177,7 +176,6 @@ class MainService : AccessibilityService() {
                                     dispatchGesture(GestureDescription.Builder()
                                         .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
                                         .build(), null, null)
-
                                     delay(1000)
 
                                     path.reset()
@@ -185,7 +183,6 @@ class MainService : AccessibilityService() {
                                     dispatchGesture(GestureDescription.Builder()
                                         .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
                                         .build(), null, null)
-
                                     delay(3000)
 
                                     path.reset()
@@ -193,6 +190,7 @@ class MainService : AccessibilityService() {
                                     dispatchGesture(GestureDescription.Builder()
                                         .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
                                         .build(), null, null)
+                                    delay(3000)
                                 }
 
                                 var openLimit = 0
@@ -201,28 +199,28 @@ class MainService : AccessibilityService() {
                                 open(688f, 939f)
                                 openLimit += 1
                                 if (openLimit == limit) {
-                                    scope.cancel()
+                                    scope.cancelAndJoin()
                                 }
 
                                 // Friend 2
                                 open(526f, 1296f)
                                 openLimit += 1
                                 if (openLimit == limit) {
-                                    scope.cancel()
+                                    scope.cancelAndJoin()
                                 }
 
                                 // Friend 3
                                 open(602f, 1604f)
                                 openLimit += 1
                                 if (openLimit == limit) {
-                                    scope.cancel()
+                                    scope.cancelAndJoin()
                                 }
 
                                 // Friend 4
                                 open(569f, 1991f)
                                 openLimit += 1
                                 if (openLimit == limit) {
-                                    scope.cancel()
+                                    scope.cancelAndJoin()
                                 } else {
                                     val scrollPath = Path()
                                     scrollPath.reset()
@@ -231,7 +229,6 @@ class MainService : AccessibilityService() {
                                     dispatchGesture(GestureDescription.Builder()
                                         .addStroke(GestureDescription.StrokeDescription(scrollPath, 0, 500))
                                         .build(), null, null)
-
                                     delay(1000)
                                 }
                             }
