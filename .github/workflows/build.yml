@@ -9,9 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./studio
     steps:
       - uses: actions/checkout@v4
 
@@ -37,5 +34,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: |
-            ./studio/app/build/outputs/apk/debug/*.apk
-            ./studio/app/build/outputs/apk/release/*.apk
+            ./app/build/outputs/apk/debug/*.apk
+            ./app/build/outputs/apk/release/*.apk
