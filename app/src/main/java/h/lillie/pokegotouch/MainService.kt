@@ -54,38 +54,7 @@ class MainService : AccessibilityService() {
 
         // Notification
 
-        val notificationChannel = NotificationChannel("PokeGOTouchNotificationChannelID", "PokeGOTouchNotificationChannel", NotificationManager.IMPORTANCE_DEFAULT)
-        notificationChannel.description = "PokeGO Touch channel for foreground service notification"
-
-        val notificationManager = this@MainService.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(notificationChannel)
-
-        val notification: Notification = NotificationCompat.Builder(this@MainService, "PokeGOTouchNotificationChannelID")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle("PokeGO Touch")
-            .addAction(0, "Show Overlay",
-                PendingIntent.getBroadcast(this@MainService,
-                    1,
-                    Intent().setAction("showOverlay"),
-                    PendingIntent.FLAG_IMMUTABLE))
-            .addAction(0, "Hide Overlay",
-                PendingIntent.getBroadcast(this@MainService,
-                    1,
-                    Intent().setAction("hideOverlay"),
-                    PendingIntent.FLAG_IMMUTABLE))
-            .build()
-
-        registerReceiver(broadcastReceiver, IntentFilter("showOverlay"), RECEIVER_NOT_EXPORTED)
-        registerReceiver(broadcastReceiver, IntentFilter("hideOverlay"), RECEIVER_NOT_EXPORTED)
-
-        // Foreground And Notification
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            startForeground(1, notification, FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
-        } else {
-            startForeground(1, notification)
-        }
+        showNotification()
 
         // Set Window Manager
 
@@ -479,6 +448,45 @@ class MainService : AccessibilityService() {
         return dp * (this@MainService.resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
     }
 
+    private fun showNotification() {
+        val notificationChannel = NotificationChannel("PokeGOTouchNotificationChannelID", "PokeGOTouchNotificationChannel", NotificationManager.IMPORTANCE_NONE)
+        notificationChannel.description = "PokeGO Touch channel for foreground service notification"
+
+        val notificationManager = this@MainService.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(notificationChannel)
+
+        val notification: Notification = NotificationCompat.Builder(this@MainService, "PokeGOTouchNotificationChannelID")
+            .setPriority(NotificationCompat.PRIORITY_MIN)
+            .setOngoing(true)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle("PokeGO Touch")
+            .addAction(0, "Show Overlay",
+                PendingIntent.getBroadcast(this@MainService,
+                    1,
+                    Intent().setAction("showOverlay"),
+                    PendingIntent.FLAG_IMMUTABLE))
+            .addAction(0, "Hide Overlay",
+                PendingIntent.getBroadcast(this@MainService,
+                    1,
+                    Intent().setAction("hideOverlay"),
+                    PendingIntent.FLAG_IMMUTABLE))
+            .setDeleteIntent(PendingIntent.getBroadcast(this@MainService,
+                1,
+                Intent().setAction("notificationDismissed"),
+                PendingIntent.FLAG_IMMUTABLE))
+            .build()
+
+        registerReceiver(broadcastReceiver, IntentFilter("showOverlay"), RECEIVER_NOT_EXPORTED)
+        registerReceiver(broadcastReceiver, IntentFilter("hideOverlay"), RECEIVER_NOT_EXPORTED)
+        registerReceiver(broadcastReceiver, IntentFilter("notificationDismissed"), RECEIVER_NOT_EXPORTED)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            startForeground(1, notification, FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
+        } else {
+            startForeground(1, notification)
+        }
+    }
+
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null) {
@@ -504,6 +512,10 @@ class MainService : AccessibilityService() {
                     if (this@MainService::sendPopup.isInitialized && sendPopup.parent != null) {
                         windowManager.removeViewImmediate(sendPopup)
                     }
+                }
+
+                if (intent.action == "notificationDismissed") {
+                    showNotification()
                 }
             }
         }
