@@ -1,7 +1,6 @@
 package h.lillie.pokegotouch
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
@@ -16,13 +15,6 @@ class Main : AppCompatActivity() {
         val notificationPermissionButton: Button = findViewById(R.id.notificationPermissionButton)
         notificationPermissionButton.setOnClickListener {
             requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1)
-        }
-
-        val displayOverOtherAppsPermissionButton: Button = findViewById(R.id.displayOverOtherAppsPermissionButton)
-        displayOverOtherAppsPermissionButton.setOnClickListener {
-            val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
         }
 
         val accessibilityPermissionButton: Button = findViewById(R.id.accessibilityPermissionButton)

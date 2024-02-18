@@ -11,11 +11,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
 import android.graphics.Path
 import android.graphics.PixelFormat
 import android.graphics.drawable.GradientDrawable
-import android.os.Build
 import android.text.InputType
 import android.util.DisplayMetrics
 import android.view.Gravity
@@ -48,8 +46,8 @@ class MainService : AccessibilityService() {
     private lateinit var sendLayout: RelativeLayout
     private lateinit var sendPopup: LinearLayout
 
-    override fun onCreate() {
-        super.onCreate()
+    override fun onServiceConnected() {
+        super.onServiceConnected()
 
         // Notification
 
@@ -402,6 +400,7 @@ class MainService : AccessibilityService() {
 
     private fun addView(view: View, align: Int?, height: Int?, width: Int?, x: Int?, y: Int?) {
         val windowManagerLayoutParams = WindowManager.LayoutParams(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
+        windowManagerLayoutParams.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
         windowManagerLayoutParams.format = PixelFormat.TRANSLUCENT
 
         if (align != null) {
@@ -440,7 +439,7 @@ class MainService : AccessibilityService() {
     }
 
     private fun showNotification() {
-        val notificationChannel = NotificationChannel("PokeGOTouchNotificationChannelID", "PokeGOTouchNotificationChannel", NotificationManager.IMPORTANCE_NONE)
+        val notificationChannel = NotificationChannel("PokeGOTouchNotificationChannelID", "PokeGOTouchNotificationChannel", NotificationManager.IMPORTANCE_MIN)
         notificationChannel.description = "PokeGO Touch channel for foreground service notification"
 
         val notificationManager = this@MainService.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -471,11 +470,7 @@ class MainService : AccessibilityService() {
         registerReceiver(broadcastReceiver, IntentFilter("hideOverlay"), RECEIVER_NOT_EXPORTED)
         registerReceiver(broadcastReceiver, IntentFilter("notificationDismissed"), RECEIVER_NOT_EXPORTED)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            startForeground(1, notification, FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
-        } else {
-            startForeground(1, notification)
-        }
+        notificationManager.notify(1, notification)
     }
 
     private val broadcastReceiver = object : BroadcastReceiver() {

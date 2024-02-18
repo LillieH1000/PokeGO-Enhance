@@ -48,29 +48,6 @@
         android:layout_height="40dp" />
 
     <TextView
-        android:id="@+id/displayOverOtherAppsPermission"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Display Over Other Apps Permission Required"
-        android:textColor="@color/white"
-        android:gravity="center"
-        tools:ignore="HardcodedText" />
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="5dp" />
-    <Button
-        android:id="@+id/displayOverOtherAppsPermissionButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Request Permission"
-        android:textAllCaps="false"
-        tools:ignore="HardcodedText" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="40dp" />
-
-    <TextView
         android:id="@+id/accessibilityPermission"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
