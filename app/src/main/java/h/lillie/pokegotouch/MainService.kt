@@ -448,6 +448,7 @@ class MainService : AccessibilityService() {
         val notification: Notification = NotificationCompat.Builder(this@MainService, "PokeGOTouchNotificationChannelID")
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setOngoing(true)
+            .setSilent(true)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle("PokeGO Touch")
             .addAction(0, "Show Overlay",
