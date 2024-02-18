@@ -80,11 +80,7 @@ class MainService : AccessibilityService() {
         openLayout.setOnClickListener {
             if (this@MainService::scope.isInitialized && scope.isActive) {
                 scope.cancel()
-                CoroutineScope(Dispatchers.Default).launch {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(this@MainService, "Stopped", Toast.LENGTH_SHORT).show()
-                    }
-                }
+                Toast.makeText(this@MainService, "Stopped", Toast.LENGTH_SHORT).show()
             } else if (this@MainService::openPopup.isInitialized && openPopup.parent != null) {
                 windowManager.removeViewImmediate(openPopup)
             } else if (this@MainService::sendPopup.isInitialized && sendPopup.parent != null) {
@@ -237,11 +233,7 @@ class MainService : AccessibilityService() {
         sendLayout.setOnClickListener {
             if (this@MainService::scope.isInitialized && scope.isActive) {
                 scope.cancel()
-                CoroutineScope(Dispatchers.Default).launch {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(this@MainService, "Stopped", Toast.LENGTH_SHORT).show()
-                    }
-                }
+                Toast.makeText(this@MainService, "Stopped", Toast.LENGTH_SHORT).show()
             } else if (this@MainService::openPopup.isInitialized && openPopup.parent != null) {
                 windowManager.removeViewImmediate(openPopup)
             } else if (this@MainService::sendPopup.isInitialized && sendPopup.parent != null) {
