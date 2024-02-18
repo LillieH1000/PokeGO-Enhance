@@ -477,6 +477,9 @@ class MainService : AccessibilityService() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null) {
                 if (intent.action == "showOverlay") {
+                    if (this@MainService::scope.isInitialized && scope.isActive) {
+                        scope.cancel()
+                    }
                     if (this@MainService::openLayout.isInitialized && openLayout.parent == null) {
                         addView(openLayout, 1, 60, 80, null, 50)
                     }
@@ -486,6 +489,9 @@ class MainService : AccessibilityService() {
                 }
 
                 if (intent.action == "hideOverlay") {
+                    if (this@MainService::scope.isInitialized && scope.isActive) {
+                        scope.cancel()
+                    }
                     if (this@MainService::openLayout.isInitialized && openLayout.parent != null) {
                         windowManager.removeViewImmediate(openLayout)
                     }
