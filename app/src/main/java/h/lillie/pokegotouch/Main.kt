@@ -1,16 +1,22 @@
 package h.lillie.pokegotouch
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
+@SuppressLint("SetTextI18n")
 class Main : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
+
+        val versionView: TextView = findViewById(R.id.versionView)
+        versionView.text = "Version: ${BuildConfig.VERSION_NAME}"
 
         val notificationPermissionButton: Button = findViewById(R.id.notificationPermissionButton)
         notificationPermissionButton.setOnClickListener {

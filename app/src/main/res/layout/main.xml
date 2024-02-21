@@ -20,12 +20,19 @@
         android:gravity="center"
         tools:ignore="HardcodedText" />
 
+    <TextView
+        android:id="@+id/versionView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:gravity="center" />
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="40dp" />
 
     <TextView
-        android:id="@+id/notificationPermission"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Notification Permission Required"
@@ -48,7 +55,6 @@
         android:layout_height="40dp" />
 
     <TextView
-        android:id="@+id/accessibilityPermission"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Accessibility Permission Required"

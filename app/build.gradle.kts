@@ -21,6 +21,10 @@ android {
         }
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
         debug {
             isMinifyEnabled = false
