@@ -6,7 +6,7 @@ plugins {
 android {
     namespace = "h.lillie.pokegotouch"
     compileSdk = 34
-    ndkVersion = "26.1.10909125"
+    ndkVersion = "26.2.11394342"
 
     defaultConfig {
         applicationId = "h.lillie.pokegotouch"
