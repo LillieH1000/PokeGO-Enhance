@@ -76,7 +76,7 @@ class MainService : AccessibilityService() {
         mainLayoutText.width = dpToPx(60)
         mainLayoutText.x = dpToPxF(10)
         mainLayoutText.y = dpToPxF(5)
-        mainLayoutText.text = "PokeGo Touch"
+        mainLayoutText.text = "PokeGO Touch"
         mainLayoutText.setTextColor(getColor(R.color.white))
         mainLayoutText.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM)
 
@@ -284,10 +284,10 @@ class MainService : AccessibilityService() {
 
                                 // Friend 1
                                 if (option == 0) {
-                                    open(688f, 939f)
+                                    send(688f, 939f)
                                 }
                                 if (option == 1) {
-                                    send(688f, 939f)
+                                    open(688f, 939f)
                                 }
                                 count += 1
                                 if (count == limit) {
@@ -296,10 +296,10 @@ class MainService : AccessibilityService() {
 
                                 // Friend 2
                                 if (option == 0) {
-                                    open(526f, 1296f)
+                                    send(526f, 1296f)
                                 }
                                 if (option == 1) {
-                                    send(526f, 1296f)
+                                    open(526f, 1296f)
                                 }
                                 count += 1
                                 if (count == limit) {
@@ -308,10 +308,10 @@ class MainService : AccessibilityService() {
 
                                 // Friend 3
                                 if (option == 0) {
-                                    open(602f, 1604f)
+                                    send(602f, 1604f)
                                 }
                                 if (option == 1) {
-                                    send(602f, 1604f)
+                                    open(602f, 1604f)
                                 }
                                 count += 1
                                 if (count == limit) {
@@ -320,10 +320,10 @@ class MainService : AccessibilityService() {
 
                                 // Friend 4
                                 if (option == 0) {
-                                    open(569f, 1991f)
+                                    send(569f, 1991f)
                                 }
                                 if (option == 1) {
-                                    send(569f, 1991f)
+                                    open(569f, 1991f)
                                 }
                                 count += 1
                                 if (count == limit) {
