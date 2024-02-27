@@ -3,14 +3,8 @@ package h.lillie.pokegotouch
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.annotation.SuppressLint
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.ComponentName
+import android.content.pm.PackageManager
 import android.graphics.Path
 import android.graphics.PixelFormat
 import android.graphics.drawable.GradientDrawable
@@ -28,7 +22,6 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.NotificationCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -52,15 +45,11 @@ class MainService : AccessibilityService() {
     override fun onServiceConnected() {
         super.onServiceConnected()
 
-        // Notification
-
-        showNotification()
-
         // Set Window Manager
 
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
 
-        // Open View
+        // Main View
 
         val mainLayoutGradient = GradientDrawable()
         mainLayoutGradient.cornerRadii = floatArrayOf(60f, 60f, 0f, 0f, 0f, 0f, 60f, 60f)
@@ -355,6 +344,33 @@ class MainService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+        if (event != null) {
+            if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && event.contentChangeTypes == AccessibilityEvent.CONTENT_CHANGE_TYPE_UNDEFINED && event.packageName != null && event.className != null) {
+                val component = ComponentName(event.packageName.toString(), event.className.toString())
+                try {
+                    packageManager.getActivityInfo(component, 0)
+                    if ("com.nianticlabs.pokemongo" == event.packageName) {
+                        if (this@MainService::scope.isInitialized && scope.isActive) {
+                            scope.cancel()
+                        }
+                        if (this@MainService::mainRelativeLayout.isInitialized && mainRelativeLayout.parent == null) {
+                            addView(mainRelativeLayout, 1, 50, 80, false)
+                        }
+                    } else {
+                        if (this@MainService::scope.isInitialized && scope.isActive) {
+                            scope.cancel()
+                        }
+                        if (this@MainService::mainRelativeLayout.isInitialized && mainRelativeLayout.parent != null) {
+                            windowManager.removeViewImmediate(mainRelativeLayout)
+                        }
+                        if (this@MainService::mainLinearLayout.isInitialized && mainLinearLayout.parent != null) {
+                            windowManager.removeViewImmediate(mainLinearLayout)
+                        }
+                    }
+                } catch (_: PackageManager.NameNotFoundException) {
+                }
+            }
+        }
     }
 
     override fun onInterrupt() {
@@ -400,72 +416,5 @@ class MainService : AccessibilityService() {
 
     private fun dpToPxF(dp: Int) : Float {
         return dp * (this@MainService.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-    }
-
-    private fun showNotification() {
-        val notificationChannel = NotificationChannel("PokeGOTouchNotificationChannelID", "PokeGOTouchNotificationChannel", NotificationManager.IMPORTANCE_MIN)
-        notificationChannel.description = "PokeGO Touch channel for foreground service notification"
-
-        val notificationManager = this@MainService.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(notificationChannel)
-
-        val notification: Notification = NotificationCompat.Builder(this@MainService, "PokeGOTouchNotificationChannelID")
-            .setPriority(NotificationCompat.PRIORITY_MIN)
-            .setOngoing(true)
-            .setSilent(true)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle("PokeGO Touch")
-            .addAction(0, "Show Overlay",
-                PendingIntent.getBroadcast(this@MainService,
-                    1,
-                    Intent().setAction("showOverlay"),
-                    PendingIntent.FLAG_IMMUTABLE))
-            .addAction(0, "Hide Overlay",
-                PendingIntent.getBroadcast(this@MainService,
-                    1,
-                    Intent().setAction("hideOverlay"),
-                    PendingIntent.FLAG_IMMUTABLE))
-            .setDeleteIntent(PendingIntent.getBroadcast(this@MainService,
-                1,
-                Intent().setAction("notificationDismissed"),
-                PendingIntent.FLAG_IMMUTABLE))
-            .build()
-
-        registerReceiver(broadcastReceiver, IntentFilter("showOverlay"), RECEIVER_NOT_EXPORTED)
-        registerReceiver(broadcastReceiver, IntentFilter("hideOverlay"), RECEIVER_NOT_EXPORTED)
-        registerReceiver(broadcastReceiver, IntentFilter("notificationDismissed"), RECEIVER_NOT_EXPORTED)
-
-        notificationManager.notify(1, notification)
-    }
-
-    private val broadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent != null) {
-                if (intent.action == "showOverlay") {
-                    if (this@MainService::scope.isInitialized && scope.isActive) {
-                        scope.cancel()
-                    }
-                    if (this@MainService::mainRelativeLayout.isInitialized && mainRelativeLayout.parent == null) {
-                        addView(mainRelativeLayout, 1, 50, 80, false)
-                    }
-                }
-
-                if (intent.action == "hideOverlay") {
-                    if (this@MainService::scope.isInitialized && scope.isActive) {
-                        scope.cancel()
-                    }
-                    if (this@MainService::mainRelativeLayout.isInitialized && mainRelativeLayout.parent != null) {
-                        windowManager.removeViewImmediate(mainRelativeLayout)
-                    }
-                    if (this@MainService::mainLinearLayout.isInitialized && mainLinearLayout.parent != null) {
-                        windowManager.removeViewImmediate(mainLinearLayout)
-                    }
-                }
-
-                if (intent.action == "notificationDismissed") {
-                    showNotification()
-                }
-            }
-        }
     }
 }

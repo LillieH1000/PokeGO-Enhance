@@ -18,11 +18,6 @@ class Main : AppCompatActivity() {
         val versionView: TextView = findViewById(R.id.versionView)
         versionView.text = "Version: ${BuildConfig.VERSION_NAME}"
 
-        val notificationPermissionButton: Button = findViewById(R.id.notificationPermissionButton)
-        notificationPermissionButton.setOnClickListener {
-            requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1)
-        }
-
         val accessibilityPermissionButton: Button = findViewById(R.id.accessibilityPermissionButton)
         accessibilityPermissionButton.setOnClickListener {
             val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
