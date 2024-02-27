@@ -6,12 +6,11 @@
     <application
         android:allowBackup="false"
         android:label="PokeGO Touch"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:enableOnBackInvokedCallback="true"
         android:theme="@style/MainTheme"
-        tools:ignore="DataExtractionRules">
+        tools:ignore="DataExtractionRules, MissingApplicationIcon"
+        tools:targetApi="tiramisu">
         <activity
             android:name=".Main"
             android:exported="true">

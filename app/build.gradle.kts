@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "h.lillie.pokegotouch"
-        minSdk = 33
+        minSdk = 30
         // noinspection OldTargetApi, EditedTargetSdkVersion
         targetSdk = 33
         compileSdk = 34
