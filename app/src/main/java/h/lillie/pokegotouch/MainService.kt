@@ -21,7 +21,6 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -73,7 +72,6 @@ class MainService : AccessibilityService() {
         mainRelativeLayout.setOnClickListener {
             if (this@MainService::scope.isInitialized && scope.isActive) {
                 scope.cancel()
-                Toast.makeText(this@MainService, "Stopped", Toast.LENGTH_SHORT).show()
             } else if (this@MainService::mainLinearLayout.isInitialized && mainLinearLayout.parent != null) {
                 windowManager.removeViewImmediate(mainLinearLayout)
             } else {
