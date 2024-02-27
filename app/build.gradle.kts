@@ -54,17 +54,28 @@ android {
 
 dependencies {
     // Core
-    implementation("androidx.core:core-ktx:1.12.0")
+    val coreVersion = "1.12.0"
+    implementation("androidx.core:core-ktx:$coreVersion")
+
     // AppCompat
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    val appcompatVersion = "1.6.1"
+    implementation("androidx.appcompat:appcompat:$appcompatVersion")
+
     // ConstraintLayout
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    val constraintlayoutVersion = "2.1.4"
+    implementation("androidx.constraintlayout:constraintlayout:$constraintlayoutVersion")
+
     // Material
-    implementation("com.google.android.material:material:1.11.0")
+    val materialVersion = "1.11.0"
+    implementation("com.google.android.material:material:$materialVersion")
+
     // Kotlinx Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    val kotlinxCoroutinesVersion = "1.7.3"
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinxCoroutinesVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
+
     // Lifecycle
-    implementation("androidx.lifecycle:lifecycle-common:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    val lifecycleVersion = "2.7.0"
+    implementation("androidx.lifecycle:lifecycle-common:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
 }
