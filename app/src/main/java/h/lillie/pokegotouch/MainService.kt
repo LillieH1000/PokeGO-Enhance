@@ -350,9 +350,6 @@ class MainService : AccessibilityService() {
                 try {
                     packageManager.getActivityInfo(component, 0)
                     if ("com.nianticlabs.pokemongo" == event.packageName) {
-                        if (this@MainService::scope.isInitialized && scope.isActive) {
-                            scope.cancel()
-                        }
                         if (this@MainService::mainRelativeLayout.isInitialized && mainRelativeLayout.parent == null) {
                             addView(mainRelativeLayout, 1, 50, 80, false)
                         }
