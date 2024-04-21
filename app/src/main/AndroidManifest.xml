@@ -7,18 +7,8 @@
         android:allowBackup="false"
         android:label="PokeGO Touch"
         android:supportsRtl="false"
-        android:enableOnBackInvokedCallback="true"
         android:theme="@style/MainTheme"
         tools:ignore="DataExtractionRules, MissingApplicationIcon">
-        <activity
-            android:name=".Main"
-            android:launchMode="singleTask"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <service
             android:name=".MainService"
             android:exported="false"
