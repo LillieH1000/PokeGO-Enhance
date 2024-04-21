@@ -30,9 +30,20 @@ jobs:
       - name: Assemble Release Apk
         run: ./gradlew assembleRelease
 
-      - name: Upload Apks
+      - name: Upload Debug Artifact
         uses: actions/upload-artifact@v4
         with:
-          path: |
-            ./app/build/outputs/apk/debug/*.apk
-            ./app/build/outputs/apk/release/*.apk
+          name: debug
+          path: ./app/build/outputs/apk/debug/*.apk
+
+      - name: Upload Release Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release
+          path: ./app/build/outputs/apk/release/*.apk
+
+      - name: Merge Artifacts
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: apks
+          delete-merged: true
