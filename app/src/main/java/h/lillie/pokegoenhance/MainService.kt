@@ -1,4 +1,4 @@
-package h.lillie.pokegotouch
+package h.lillie.pokegoenhance
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
@@ -65,7 +65,7 @@ class MainService : AccessibilityService() {
         mainLayoutText.width = dpToPx(60)
         mainLayoutText.x = dpToPxF(10)
         mainLayoutText.y = dpToPxF(5)
-        mainLayoutText.text = "PokeGO Touch"
+        mainLayoutText.text = "PokeGO Enhance"
         mainLayoutText.setTextColor(getColor(R.color.white))
         mainLayoutText.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM)
 

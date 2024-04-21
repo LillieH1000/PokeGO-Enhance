@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PokeGO Touch"
+rootProject.name = "PokeGO Enhance"
 include(":app")

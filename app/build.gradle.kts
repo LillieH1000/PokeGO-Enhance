@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "h.lillie.pokegotouch"
+    namespace = "h.lillie.pokegoenhance"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "h.lillie.pokegotouch"
+        applicationId = "h.lillie.pokegoenhance"
         minSdk = 33
         // noinspection OldTargetApi, EditedTargetSdkVersion
         targetSdk = 33

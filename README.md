@@ -1,4 +1,4 @@
-# PokeGO-Touch
+# PokeGO Enhance
 
 My personal Android app that uses an AccessibilityService to send inputs to Pokemon GO to automatically open gifts and automatically send gifts.
 
