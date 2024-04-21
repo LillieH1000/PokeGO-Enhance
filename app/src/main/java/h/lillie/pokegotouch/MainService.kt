@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -344,25 +345,31 @@ class MainService : AccessibilityService() {
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         if (event != null) {
             if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && event.contentChangeTypes == AccessibilityEvent.CONTENT_CHANGE_TYPE_UNDEFINED && event.packageName != null && event.className != null) {
-                val component = ComponentName(event.packageName.toString(), event.className.toString())
-                try {
-                    packageManager.getActivityInfo(component, 0)
-                    if ("com.nianticlabs.pokemongo" == event.packageName) {
-                        if (this@MainService::mainRelativeLayout.isInitialized && mainRelativeLayout.parent == null) {
-                            addView(mainRelativeLayout, 1, 50, 80, false)
-                        }
-                    } else {
-                        if (this@MainService::scope.isInitialized && scope.isActive) {
-                            scope.cancel()
-                        }
-                        if (this@MainService::mainRelativeLayout.isInitialized && mainRelativeLayout.parent != null) {
-                            windowManager.removeViewImmediate(mainRelativeLayout)
-                        }
-                        if (this@MainService::mainLinearLayout.isInitialized && mainLinearLayout.parent != null) {
-                            windowManager.removeViewImmediate(mainLinearLayout)
-                        }
+                if (event.packageName == "com.android.settings" && event.text.toString().lowercase().contains("pair with pokemon go plus") && event.source != null) {
+                    val pairButtonList = event.source!!.findAccessibilityNodeInfosByViewId("android:id/button1")
+                    if (pairButtonList.isNotEmpty()) {
+                        pairButtonList[0].performAction(AccessibilityNodeInfo.ACTION_CLICK)
                     }
-                } catch (_: PackageManager.NameNotFoundException) {
+                } else {
+                    try {
+                        packageManager.getActivityInfo(ComponentName(event.packageName.toString(), event.className.toString()), 0)
+                        if (event.packageName == "com.nianticlabs.pokemongo") {
+                            if (this@MainService::mainRelativeLayout.isInitialized && mainRelativeLayout.parent == null) {
+                                addView(mainRelativeLayout, 1, 50, 80, false)
+                            }
+                        } else {
+                            if (this@MainService::scope.isInitialized && scope.isActive) {
+                                scope.cancel()
+                            }
+                            if (this@MainService::mainRelativeLayout.isInitialized && mainRelativeLayout.parent != null) {
+                                windowManager.removeViewImmediate(mainRelativeLayout)
+                            }
+                            if (this@MainService::mainLinearLayout.isInitialized && mainLinearLayout.parent != null) {
+                                windowManager.removeViewImmediate(mainLinearLayout)
+                            }
+                        }
+                    } catch (_: PackageManager.NameNotFoundException) {
+                    }
                 }
             }
         }
