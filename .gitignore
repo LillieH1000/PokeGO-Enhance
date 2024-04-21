@@ -3,7 +3,6 @@
 
 # Local Configuration File
 local.properties
-/local.properties
 
 # Gradle
 .gradle/
