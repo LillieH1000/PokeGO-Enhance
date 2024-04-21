@@ -15,8 +15,8 @@ jobs:
       - name: Checkout JDK
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
-          java-version: '17'
+          distribution: "zulu"
+          java-version: "17"
 
       - name: Chmod Gradle
         run: chmod +x ./gradlew
