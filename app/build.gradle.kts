@@ -13,8 +13,8 @@ android {
         // noinspection OldTargetApi, EditedTargetSdkVersion
         targetSdk = 33
         compileSdk = 34
-        versionCode = 11
-        versionName = "1.1.0"
+        versionCode = 12
+        versionName = "1.1.1"
         vectorDrawables {
             useSupportLibrary = true
         }
