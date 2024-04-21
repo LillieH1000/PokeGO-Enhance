@@ -345,31 +345,34 @@ class MainService : AccessibilityService() {
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         if (event != null) {
             if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && event.contentChangeTypes == AccessibilityEvent.CONTENT_CHANGE_TYPE_UNDEFINED && event.packageName != null && event.className != null) {
+                if (event.packageName == "com.android.settings" && event.className == "com.android.settings.bluetooth.BluetoothPairingDialog") return
+
                 if (event.packageName == "com.android.settings" && event.text.toString().lowercase().contains("pair with pokemon go plus") && event.source != null) {
                     val pairButtonList = event.source!!.findAccessibilityNodeInfosByViewId("android:id/button1")
                     if (pairButtonList.isNotEmpty()) {
                         pairButtonList[0].performAction(AccessibilityNodeInfo.ACTION_CLICK)
                     }
-                } else {
-                    try {
-                        packageManager.getActivityInfo(ComponentName(event.packageName.toString(), event.className.toString()), 0)
-                        if (event.packageName == "com.nianticlabs.pokemongo") {
-                            if (this@MainService::mainRelativeLayout.isInitialized && mainRelativeLayout.parent == null) {
-                                addView(mainRelativeLayout, 1, 50, 80, false)
-                            }
-                        } else {
-                            if (this@MainService::scope.isInitialized && scope.isActive) {
-                                scope.cancel()
-                            }
-                            if (this@MainService::mainRelativeLayout.isInitialized && mainRelativeLayout.parent != null) {
-                                windowManager.removeViewImmediate(mainRelativeLayout)
-                            }
-                            if (this@MainService::mainLinearLayout.isInitialized && mainLinearLayout.parent != null) {
-                                windowManager.removeViewImmediate(mainLinearLayout)
-                            }
+                    return
+                }
+
+                try {
+                    packageManager.getActivityInfo(ComponentName(event.packageName.toString(), event.className.toString()), 0)
+                    if (event.packageName == "com.nianticlabs.pokemongo") {
+                        if (this@MainService::mainRelativeLayout.isInitialized && mainRelativeLayout.parent == null) {
+                            addView(mainRelativeLayout, 1, 50, 80, false)
                         }
-                    } catch (_: PackageManager.NameNotFoundException) {
+                    } else {
+                        if (this@MainService::scope.isInitialized && scope.isActive) {
+                            scope.cancel()
+                        }
+                        if (this@MainService::mainRelativeLayout.isInitialized && mainRelativeLayout.parent != null) {
+                            windowManager.removeViewImmediate(mainRelativeLayout)
+                        }
+                        if (this@MainService::mainLinearLayout.isInitialized && mainLinearLayout.parent != null) {
+                            windowManager.removeViewImmediate(mainLinearLayout)
+                        }
                     }
+                } catch (_: PackageManager.NameNotFoundException) {
                 }
             }
         }
