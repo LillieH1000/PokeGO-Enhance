@@ -6,11 +6,10 @@ plugins {
 android {
     namespace = "h.lillie.pokegotouch"
     compileSdk = 34
-    ndkVersion = "26.2.11394342"
 
     defaultConfig {
         applicationId = "h.lillie.pokegotouch"
-        minSdk = 30
+        minSdk = 33
         // noinspection OldTargetApi, EditedTargetSdkVersion
         targetSdk = 33
         compileSdk = 34
@@ -54,7 +53,7 @@ android {
 
 dependencies {
     // Core
-    val coreVersion = "1.12.0"
+    val coreVersion = "1.13.0"
     implementation("androidx.core:core-ktx:$coreVersion")
 
     // AppCompat
