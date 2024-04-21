@@ -62,7 +62,7 @@ class MainService : AccessibilityService() {
         val mainLayoutText = TextView(this@MainService)
         mainLayoutText.gravity = Gravity.CENTER
         mainLayoutText.height = dpToPx(40)
-        mainLayoutText.width = dpToPx(60)
+        mainLayoutText.width = dpToPx(65)
         mainLayoutText.x = dpToPxF(10)
         mainLayoutText.y = dpToPxF(5)
         mainLayoutText.text = "PokeGO Enhance"
