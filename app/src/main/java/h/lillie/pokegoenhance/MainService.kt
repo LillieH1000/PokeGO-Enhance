@@ -343,37 +343,43 @@ class MainService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        if (event != null) {
-            if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && event.contentChangeTypes == AccessibilityEvent.CONTENT_CHANGE_TYPE_UNDEFINED && event.packageName != null && event.className != null) {
-                if (event.packageName == "com.android.settings" && event.className == "com.android.settings.bluetooth.BluetoothPairingDialog") return
+        if (event == null) return
 
-                if (event.packageName == "com.android.settings" && event.text.toString().lowercase().contains("pair with pokemon go plus") && event.source != null) {
-                    val pairButtonList = event.source!!.findAccessibilityNodeInfosByViewId("android:id/button1")
-                    if (pairButtonList.isNotEmpty()) {
-                        pairButtonList[0].performAction(AccessibilityNodeInfo.ACTION_CLICK)
-                    }
+        if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && event.contentChangeTypes == AccessibilityEvent.CONTENT_CHANGE_TYPE_UNDEFINED && event.packageName != null && event.className != null) {
+            if (event.packageName == "com.android.settings" && event.className == "com.android.settings.bluetooth.BluetoothPairingDialog") return
+
+            if (event.packageName == "com.android.settings" && event.text.toString().lowercase().contains("pair with pokemon go plus") && event.source != null) {
+                val pixelPairButtonList = event.source!!.findAccessibilityNodeInfosByViewId("android:id/button1")
+                if (pixelPairButtonList.isNotEmpty()) {
+                    pixelPairButtonList[0].performAction(AccessibilityNodeInfo.ACTION_CLICK)
                     return
                 }
-
-                try {
-                    packageManager.getActivityInfo(ComponentName(event.packageName.toString(), event.className.toString()), 0)
-                    if (event.packageName == "com.nianticlabs.pokemongo") {
-                        if (this@MainService::mainRelativeLayout.isInitialized && mainRelativeLayout.parent == null) {
-                            addView(mainRelativeLayout, 1, 50, 80, false)
-                        }
-                    } else {
-                        if (this@MainService::scope.isInitialized && scope.isActive) {
-                            scope.cancel()
-                        }
-                        if (this@MainService::mainRelativeLayout.isInitialized && mainRelativeLayout.parent != null) {
-                            windowManager.removeViewImmediate(mainRelativeLayout)
-                        }
-                        if (this@MainService::mainLinearLayout.isInitialized && mainLinearLayout.parent != null) {
-                            windowManager.removeViewImmediate(mainLinearLayout)
-                        }
-                    }
-                } catch (_: PackageManager.NameNotFoundException) {
+                val samsungPairButtonList = event.source!!.findAccessibilityNodeInfosByViewId("$packageName:id/button1")
+                if (samsungPairButtonList.isNotEmpty()) {
+                    samsungPairButtonList[0].performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                    return
                 }
+                return
+            }
+
+            try {
+                packageManager.getActivityInfo(ComponentName(event.packageName.toString(), event.className.toString()), 0)
+                if (event.packageName == "com.nianticlabs.pokemongo") {
+                    if (this@MainService::mainRelativeLayout.isInitialized && mainRelativeLayout.parent == null) {
+                        addView(mainRelativeLayout, 1, 50, 80, false)
+                    }
+                } else {
+                    if (this@MainService::scope.isInitialized && scope.isActive) {
+                        scope.cancel()
+                    }
+                    if (this@MainService::mainRelativeLayout.isInitialized && mainRelativeLayout.parent != null) {
+                        windowManager.removeViewImmediate(mainRelativeLayout)
+                    }
+                    if (this@MainService::mainLinearLayout.isInitialized && mainLinearLayout.parent != null) {
+                        windowManager.removeViewImmediate(mainLinearLayout)
+                    }
+                }
+            } catch (_: PackageManager.NameNotFoundException) {
             }
         }
     }
