@@ -5,14 +5,13 @@ plugins {
 
 android {
     namespace = "h.lillie.pokegoenhance"
-    compileSdk = 34
+    compileSdkPreview = "VanillaIceCream"
 
     defaultConfig {
         applicationId = "h.lillie.pokegoenhance"
         minSdk = 33
         // noinspection OldTargetApi, EditedTargetSdkVersion
-        targetSdk = 33
-        compileSdk = 34
+        targetSdkPreview = "VanillaIceCream"
         versionCode = 13
         versionName = "1.1.2"
         vectorDrawables {
