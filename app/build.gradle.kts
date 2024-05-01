@@ -65,7 +65,7 @@ dependencies {
     implementation("com.google.android.material:material:$materialVersion")
 
     // Kotlinx Coroutines
-    val kotlinxCoroutinesVersion = "1.7.3"
+    val kotlinxCoroutinesVersion = "1.8.0"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinxCoroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
 
