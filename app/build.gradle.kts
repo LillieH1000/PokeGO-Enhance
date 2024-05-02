@@ -11,7 +11,7 @@ android {
         applicationId = "h.lillie.pokegoenhance"
         minSdk = 33
         // noinspection OldTargetApi, EditedTargetSdkVersion
-        targetSdkPreview = "VanillaIceCream"
+        targetSdk = 34
         versionCode = 13
         versionName = "1.1.2"
         vectorDrawables {
@@ -48,7 +48,7 @@ android {
 
 dependencies {
     // Core
-    val coreVersion = "1.13.0"
+    val coreVersion = "1.13.1"
     implementation("androidx.core:core-ktx:$coreVersion")
 
     // AppCompat
@@ -60,7 +60,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:$constraintlayoutVersion")
 
     // Material
-    val materialVersion = "1.11.0"
+    val materialVersion = "1.12.0"
     implementation("com.google.android.material:material:$materialVersion")
 
     // Kotlinx Coroutines
