@@ -12,10 +12,13 @@ build/
 *.iml
 .idea/
 
-# Android Studio Generated
+# Android Studio
 captures/
 .externalNativeBuild/
 .cxx/
+
+# Visual Studio Code
+.vscode/
 
 # Logs
 *.log
