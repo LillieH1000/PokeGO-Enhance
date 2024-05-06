@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "h.lillie.pokegoenhance"
-    compileSdkPreview = "VanillaIceCream"
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "h.lillie.pokegoenhance"
