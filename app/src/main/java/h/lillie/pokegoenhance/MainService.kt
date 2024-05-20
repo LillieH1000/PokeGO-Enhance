@@ -349,15 +349,9 @@ class MainService : AccessibilityService() {
             if (event.packageName == "com.android.settings" && event.className == "com.android.settings.bluetooth.BluetoothPairingDialog") return
 
             if (event.packageName == "com.android.settings" && event.text.toString().lowercase().contains("pair with pokemon go plus") && event.source != null) {
-                val pixelPairButtonList = event.source!!.findAccessibilityNodeInfosByViewId("android:id/button1")
-                if (pixelPairButtonList.isNotEmpty()) {
-                    pixelPairButtonList[0].performAction(AccessibilityNodeInfo.ACTION_CLICK)
-                    return
-                }
-                val samsungPairButtonList = event.source!!.findAccessibilityNodeInfosByViewId("$packageName:id/button1")
-                if (samsungPairButtonList.isNotEmpty()) {
-                    samsungPairButtonList[0].performAction(AccessibilityNodeInfo.ACTION_CLICK)
-                    return
+                val pairButtonList = event.source!!.findAccessibilityNodeInfosByViewId("android:id/button1")
+                if (pairButtonList.isNotEmpty()) {
+                    pairButtonList[0].performAction(AccessibilityNodeInfo.ACTION_CLICK)
                 }
                 return
             }
