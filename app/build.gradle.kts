@@ -69,7 +69,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
 
     // Lifecycle
-    val lifecycleVersion = "2.7.0"
+    val lifecycleVersion = "2.8.0"
     implementation("androidx.lifecycle:lifecycle-common:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
 }
