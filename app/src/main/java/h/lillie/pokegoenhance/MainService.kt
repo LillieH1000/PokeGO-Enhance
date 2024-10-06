@@ -353,7 +353,6 @@ class MainService : AccessibilityService() {
                 if (pairButtonList.isNotEmpty()) {
                     pairButtonList[0].performAction(AccessibilityNodeInfo.ACTION_CLICK)
                 }
-                return
             }
 
             try {
