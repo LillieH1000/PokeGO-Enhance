@@ -97,7 +97,7 @@ class MainService : AccessibilityService() {
                 val optionEdit = EditText(this@MainService)
                 optionEdit.height = dpToPx(50)
                 optionEdit.width = dpToPx(400)
-                optionEdit.inputType = InputType.TYPE_CLASS_TEXT
+                optionEdit.inputType = InputType.TYPE_CLASS_NUMBER
                 optionEdit.hint = "Enter amount"
                 optionEdit.setHintTextColor(getColor(R.color.white))
                 optionEdit.setTextColor(getColor(R.color.white))
