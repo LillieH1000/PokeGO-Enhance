@@ -1,9 +1,6 @@
 # macOS
 .DS_Store
 
-# Local Configuration File
-local.properties
-
 # Gradle
 .gradle/
 build/
