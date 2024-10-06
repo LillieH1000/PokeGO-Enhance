@@ -13,7 +13,7 @@ android {
         // noinspection OldTargetApi, EditedTargetSdkVersion
         targetSdk = 34
         versionCode = 14
-        versionName = "1.1.3"
+        versionName = "2.0.0"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -52,7 +52,7 @@ dependencies {
     implementation("androidx.core:core-ktx:$coreVersion")
 
     // AppCompat
-    val appcompatVersion = "1.6.1"
+    val appcompatVersion = "1.7.0"
     implementation("androidx.appcompat:appcompat:$appcompatVersion")
 
     // ConstraintLayout
@@ -69,7 +69,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
 
     // Lifecycle
-    val lifecycleVersion = "2.8.0"
+    val lifecycleVersion = "2.8.6"
     implementation("androidx.lifecycle:lifecycle-common:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
 }
