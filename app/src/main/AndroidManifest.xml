@@ -11,6 +11,7 @@
         tools:ignore="DataExtractionRules, MissingApplicationIcon">
         <service
             android:name=".MainService"
+            android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <meta-data
