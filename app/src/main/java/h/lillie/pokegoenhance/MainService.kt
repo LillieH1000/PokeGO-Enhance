@@ -358,6 +358,18 @@ class MainService : AccessibilityService() {
                 }
             }
 
+            if (event.packageName == "com.android.systemui" && Regex("[^A-Za-z0-9 ]").replace(event.text.toString(), "").contains("lock screen", true) && event.source != null) {
+                if (this@MainService::scope.isInitialized && scope.isActive) {
+                    scope.cancel()
+                }
+                if (this@MainService::mainRelativeLayout.isInitialized && mainRelativeLayout.parent != null) {
+                    windowManager.removeViewImmediate(mainRelativeLayout)
+                }
+                if (this@MainService::mainLinearLayout.isInitialized && mainLinearLayout.parent != null) {
+                    windowManager.removeViewImmediate(mainLinearLayout)
+                }
+            }
+
             try {
                 packageManager.getActivityInfo(ComponentName(event.packageName.toString(), event.className.toString()), 0)
                 if (event.packageName == "com.nianticlabs.pokemongo") {
