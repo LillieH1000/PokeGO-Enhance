@@ -348,7 +348,7 @@ class MainService : AccessibilityService() {
         if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && event.contentChangeTypes == AccessibilityEvent.CONTENT_CHANGE_TYPE_UNDEFINED && event.packageName != null && event.className != null) {
             if (event.packageName == "com.android.settings" && event.className == "com.android.settings.bluetooth.BluetoothPairingDialog") return
 
-            if (event.packageName == "com.android.settings" && event.text.toString().lowercase().contains("pair with pokemon go plus") && event.source != null) {
+            if (event.packageName == "com.android.settings" && Regex("[^A-Za-z0-9 ]").replace(event.text.toString(), "").contains("pair with pokemon go plus", true) && event.source != null) {
                 val pairButtonList = event.source!!.findAccessibilityNodeInfosByViewId("android:id/button1")
                 if (pairButtonList.isNotEmpty()) {
                     pairButtonList[0].performAction(AccessibilityNodeInfo.ACTION_CLICK)
