@@ -1,6 +1,7 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -14,9 +15,6 @@ android {
         targetSdk = 34
         versionCode = 23
         versionName = "2.0.3"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
     }
 
     buildTypes {
@@ -34,42 +32,22 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-
     kotlinOptions {
         jvmTarget = "17"
     }
-
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
+    buildFeatures {
+        compose = true
     }
 }
 
 dependencies {
-    // Core
-    val coreVersion = "1.13.1"
-    implementation("androidx.core:core-ktx:$coreVersion")
-
-    // AppCompat
-    val appcompatVersion = "1.7.0"
-    implementation("androidx.appcompat:appcompat:$appcompatVersion")
-
-    // ConstraintLayout
-    val constraintlayoutVersion = "2.1.4"
-    implementation("androidx.constraintlayout:constraintlayout:$constraintlayoutVersion")
-
-    // Material
-    val materialVersion = "1.12.0"
-    implementation("com.google.android.material:material:$materialVersion")
-
-    // Kotlinx Coroutines
-    val kotlinxCoroutinesVersion = "1.8.0"
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinxCoroutinesVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
-
-    // Lifecycle
-    val lifecycleVersion = "2.8.6"
-    implementation("androidx.lifecycle:lifecycle-common:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.common)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.material3)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.material)
 }
