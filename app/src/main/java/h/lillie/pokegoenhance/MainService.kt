@@ -10,7 +10,6 @@ import android.graphics.PixelFormat
 import android.graphics.drawable.GradientDrawable
 import android.text.InputType
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.View
