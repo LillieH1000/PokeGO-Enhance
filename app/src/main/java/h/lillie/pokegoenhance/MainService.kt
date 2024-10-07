@@ -12,6 +12,7 @@ import android.text.InputType
 import android.util.DisplayMetrics
 import android.view.ContextThemeWrapper
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -33,7 +34,7 @@ import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@SuppressLint("SetTextI18n")
+@SuppressLint("InflateParams", "SetTextI18n")
 class MainService : AccessibilityService() {
     private lateinit var windowManager: WindowManager
     private lateinit var scope: Job
@@ -59,17 +60,9 @@ class MainService : AccessibilityService() {
         mainRelativeLayout = RelativeLayout(this@MainService)
         mainRelativeLayout.background = mainLayoutGradient
 
-        val mainLayoutText = TextView(this@MainService)
-        mainLayoutText.gravity = Gravity.CENTER
-        mainLayoutText.height = dpToPx(40)
-        mainLayoutText.width = dpToPx(65)
-        mainLayoutText.x = dpToPxF(10)
-        mainLayoutText.y = dpToPxF(5)
-        mainLayoutText.text = "PokeGO Enhance"
-        mainLayoutText.setTextColor(getColor(R.color.white))
-        mainLayoutText.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM)
+        val overlay: View = LayoutInflater.from(this@MainService).inflate(R.layout.overlay, null, false)
+        mainRelativeLayout.addView(overlay)
 
-        mainRelativeLayout.addView(mainLayoutText)
         mainRelativeLayout.setOnClickListener {
             if (this@MainService::scope.isInitialized && scope.isActive) {
                 scope.cancel()
