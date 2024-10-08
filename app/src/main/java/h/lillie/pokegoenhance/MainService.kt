@@ -403,7 +403,7 @@ class MainService : AccessibilityService() {
                         val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
                         recognizer.process(image)
                             .addOnSuccessListener { visionText ->
-                                if (Regex("[^A-Za-z0-9 ]").replace(visionText.text.replace("\n", ""), "").contains("friends", true) || sendView.parent != null || openView.parent != null || (this@MainService::scope.isInitialized && scope.isActive)) {
+                                if (Regex("[^A-Za-z0-9 ]").replace(visionText.text.replace("\n", ""), "").contains("FRIENDS") || sendView.parent != null || openView.parent != null || (this@MainService::scope.isInitialized && scope.isActive)) {
                                     // Gifts View
                                     if (this@MainService::giftsView.isInitialized && giftsView.parent == null) {
                                         addView(giftsView, 0, 50)
