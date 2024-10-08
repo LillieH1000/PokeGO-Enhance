@@ -4,4 +4,5 @@
     android:description="@string/description"
     android:accessibilityEventTypes="typeWindowStateChanged"
     android:canPerformGestures="true"
-    android:canRetrieveWindowContent="true" />
+    android:canRetrieveWindowContent="true"
+    android:canTakeScreenshot="true" />

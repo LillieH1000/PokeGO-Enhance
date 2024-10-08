@@ -2,4 +2,9 @@
 <resources>
     <string name="title">PokeGO Enhance</string>
     <string name="description">Enhance Your Pokemon GO Experience</string>
+    <string name="send">Send Gift</string>
+    <string name="open">Open Gift</string>
+    <string name="amount">Enter amount</string>
+    <string name="start">Start</string>
+    <string name="top">Does the top of the list have gifts?</string>
 </resources>

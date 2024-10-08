@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="@style/MainTheme"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sendGift"
+            android:layout_width="130dp"
+            android:layout_height="match_parent"
+            android:text="@string/send"
+            android:textColor="@color/black"
+            android:textAllCaps="false"
+            android:autoSizeTextType="uniform"
+            style="?attr/materialButtonOutlinedStyle" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/openGift"
+            android:layout_width="130dp"
+            android:layout_height="match_parent"
+            android:text="@string/open"
+            android:textColor="@color/black"
+            android:textAllCaps="false"
+            android:autoSizeTextType="uniform"
+            style="?attr/materialButtonOutlinedStyle" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+</RelativeLayout>
