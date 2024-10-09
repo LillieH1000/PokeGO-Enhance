@@ -35,6 +35,7 @@ import kotlinx.coroutines.withContext
 @SuppressLint("InflateParams")
 class MainService : AccessibilityService() {
     private lateinit var windowManager: WindowManager
+    private lateinit var dispatchHandler: Handler
     private lateinit var overlayHandler: Handler
     private lateinit var scope: Job
 
@@ -50,6 +51,7 @@ class MainService : AccessibilityService() {
         // Set Window Manager
 
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
+        dispatchHandler = Handler(Looper.getMainLooper())
 
         giftsView = LayoutInflater.from(this@MainService).inflate(R.layout.gifts, null, false)
         sendView = LayoutInflater.from(this@MainService).inflate(R.layout.send, null, false)
@@ -124,7 +126,7 @@ class MainService : AccessibilityService() {
                             path.moveTo(x, y)
                             dispatchGesture(GestureDescription.Builder()
                                 .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                .build(), null, null)
+                                .build(), null, dispatchHandler)
                             delay(3000)
 
                             if (topSwitch.isChecked) {
@@ -132,7 +134,7 @@ class MainService : AccessibilityService() {
                                 path.moveTo(545f, 2191f)
                                 dispatchGesture(GestureDescription.Builder()
                                     .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                    .build(), null, null)
+                                    .build(), null, dispatchHandler)
                                 delay(3000)
                             }
 
@@ -140,35 +142,35 @@ class MainService : AccessibilityService() {
                             path.moveTo(283f, 1802f)
                             dispatchGesture(GestureDescription.Builder()
                                 .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                .build(), null, null)
+                                .build(), null, dispatchHandler)
                             delay(3000)
 
                             path.reset()
                             path.moveTo(626f, 847f)
                             dispatchGesture(GestureDescription.Builder()
                                 .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                .build(), null, null)
+                                .build(), null, dispatchHandler)
                             delay(3000)
 
                             path.reset()
                             path.moveTo(544f, 1989f)
                             dispatchGesture(GestureDescription.Builder()
                                 .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                .build(), null, null)
+                                .build(), null, dispatchHandler)
                             delay(1000)
 
                             path.reset()
                             path.moveTo(545f, 2191f)
                             dispatchGesture(GestureDescription.Builder()
                                 .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                .build(), null, null)
+                                .build(), null, dispatchHandler)
                             delay(3000)
 
                             path.reset()
                             path.moveTo(545f, 2191f)
                             dispatchGesture(GestureDescription.Builder()
                                 .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                .build(), null, null)
+                                .build(), null, dispatchHandler)
                             delay(3000)
                         }
 
@@ -202,7 +204,7 @@ class MainService : AccessibilityService() {
                             scrollPath.lineTo(250f, 500f)
                             dispatchGesture(GestureDescription.Builder()
                                 .addStroke(GestureDescription.StrokeDescription(scrollPath, 0, 400))
-                                .build(), null, null)
+                                .build(), null, dispatchHandler)
                             delay(1000)
                         }
                     }
@@ -234,35 +236,35 @@ class MainService : AccessibilityService() {
                             path.moveTo(x, y)
                             dispatchGesture(GestureDescription.Builder()
                                 .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                .build(), null, null)
+                                .build(), null, dispatchHandler)
                             delay(3000)
 
                             path.reset()
                             path.moveTo(540f, 1599f)
                             dispatchGesture(GestureDescription.Builder()
                                 .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                .build(), null, null)
+                                .build(), null, dispatchHandler)
                             delay(3000)
 
                             path.reset()
                             path.moveTo(548f, 2010f)
                             dispatchGesture(GestureDescription.Builder()
                                 .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                .build(), null, null)
+                                .build(), null, dispatchHandler)
                             delay(1000)
 
                             path.reset()
                             path.moveTo(545f, 2191f)
                             dispatchGesture(GestureDescription.Builder()
                                 .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                .build(), null, null)
+                                .build(), null, dispatchHandler)
                             delay(3000)
 
                             path.reset()
                             path.moveTo(545f, 2191f)
                             dispatchGesture(GestureDescription.Builder()
                                 .addStroke(GestureDescription.StrokeDescription(path, 0, 1))
-                                .build(), null, null)
+                                .build(), null, dispatchHandler)
                             delay(3000)
                         }
 
@@ -296,7 +298,7 @@ class MainService : AccessibilityService() {
                             scrollPath.lineTo(250f, 500f)
                             dispatchGesture(GestureDescription.Builder()
                                 .addStroke(GestureDescription.StrokeDescription(scrollPath, 0, 400))
-                                .build(), null, null)
+                                .build(), null, dispatchHandler)
                             delay(1000)
                         }
                     }
