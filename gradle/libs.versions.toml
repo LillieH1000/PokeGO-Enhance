@@ -2,11 +2,11 @@
 appcompatVersion = "1.7.0"
 constraintlayoutVersion = "2.1.4"
 coreVersion = "1.13.1"
-kotlinxCoroutinesVersion = "1.8.0"
+kotlinxCoroutinesVersion = "1.9.0"
 lifecycleVersion = "2.8.6"
 materialVersion = "1.12.0"
-androidVersion = "8.7.0"
-kotlinVersion = "2.0.20"
+androidVersion = "8.7.1"
+kotlinVersion = "2.0.21"
 textRecognitionVersion = "16.0.1"
 
 [libraries]
