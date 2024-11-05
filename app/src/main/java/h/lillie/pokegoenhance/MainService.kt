@@ -31,6 +31,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.concurrent.Executors
 
 @SuppressLint("InflateParams")
 class MainService : AccessibilityService() {
@@ -396,7 +397,7 @@ class MainService : AccessibilityService() {
     private val overlayTask = object : Runnable {
         override fun run() {
             if (inPokemonGO) {
-                takeScreenshot(Display.DEFAULT_DISPLAY, applicationContext.mainExecutor, object : TakeScreenshotCallback {
+                takeScreenshot(Display.DEFAULT_DISPLAY, Executors.newSingleThreadExecutor(), object : TakeScreenshotCallback {
                     override fun onSuccess(screenshot: ScreenshotResult) {
                         val bitmap: Bitmap = Bitmap.wrapHardwareBuffer(screenshot.hardwareBuffer, screenshot.colorSpace)!!
                         val image = InputImage.fromBitmap(bitmap, 0)
