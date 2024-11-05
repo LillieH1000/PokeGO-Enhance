@@ -405,7 +405,7 @@ class MainService : AccessibilityService() {
                             .addOnSuccessListener { visionText ->
                                 if (Regex("[^A-Za-z0-9 ]").replace(visionText.text.replace("\n", ""), "").contains("FRIENDS") || sendView.parent != null || openView.parent != null || (this@MainService::scope.isInitialized && scope.isActive)) {
                                     // Gifts View
-                                    if (this@MainService::giftsView.isInitialized && giftsView.parent == null) {
+                                    if (inPokemonGO && this@MainService::giftsView.isInitialized && giftsView.parent == null) {
                                         addView(giftsView, 0, 50)
                                     }
                                 } else {
