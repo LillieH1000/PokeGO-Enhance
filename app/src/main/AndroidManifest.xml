@@ -10,7 +10,7 @@
         android:theme="@style/MainTheme"
         tools:ignore="DataExtractionRules, MissingApplicationIcon">
         <service
-            android:name=".MainService"
+            android:name=".GiftsService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
