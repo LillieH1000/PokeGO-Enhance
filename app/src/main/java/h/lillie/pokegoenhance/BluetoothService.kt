@@ -1,11 +1,9 @@
 package h.lillie.pokegoenhance
 
 import android.accessibilityservice.AccessibilityService
-import android.annotation.SuppressLint
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 
-@SuppressLint("InflateParams")
 class BluetoothService : AccessibilityService() {
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
