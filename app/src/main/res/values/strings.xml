@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title">PokeGO Enhance</string>
-    <string name="description">Enhance Your Pokemon GO Experience</string>
+    <string name="bluetooth">Auto Skip The Go Plus Bluetooth Pair Prompt</string>
+    <string name="gifts">Auto Send/Open Gifts</string>
     <string name="send">Send Gift</string>
     <string name="open">Open Gift</string>
     <string name="amount">Enter amount</string>

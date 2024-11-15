@@ -17,7 +17,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
-import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.EditText
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -313,16 +312,6 @@ class GiftsService : AccessibilityService() {
         if (event == null) return
 
         if (event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED || event.contentChangeTypes != AccessibilityEvent.CONTENT_CHANGE_TYPE_UNDEFINED || event.packageName == null || event.className == null) return
-
-        if (event.packageName == "com.android.settings" && event.className == "com.android.settings.bluetooth.BluetoothPairingDialog") return
-
-        // PokeGO Plus Auto Pair
-        if (event.packageName == "com.android.settings" && Regex("[^A-Za-z0-9 ]").replace(event.text.toString(), "").contains("pair with pokemon go plus", true) && event.source != null) {
-            val pairButtonList = event.source!!.findAccessibilityNodeInfosByViewId("android:id/button1")
-            if (pairButtonList.isNotEmpty()) {
-                pairButtonList[0].performAction(AccessibilityNodeInfo.ACTION_CLICK)
-            }
-        }
 
         if (event.packageName == "com.android.systemui" && Regex("[^A-Za-z0-9 ]").replace(event.text.toString(), "").contains("lock screen", true) && event.source != null) {
             inPokemonGO = false
