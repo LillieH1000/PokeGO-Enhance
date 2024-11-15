@@ -34,7 +34,7 @@ import kotlinx.coroutines.withContext
 import java.util.concurrent.Executors
 
 @SuppressLint("InflateParams")
-class MainService : AccessibilityService() {
+class GiftsService : AccessibilityService() {
     private lateinit var windowManager: WindowManager
     private lateinit var overlayHandler: Handler
     private lateinit var scope: Job
@@ -52,27 +52,27 @@ class MainService : AccessibilityService() {
 
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
 
-        giftsView = LayoutInflater.from(this@MainService).inflate(R.layout.gifts, null, false)
-        sendView = LayoutInflater.from(this@MainService).inflate(R.layout.send, null, false)
-        openView = LayoutInflater.from(this@MainService).inflate(R.layout.open, null, false)
+        giftsView = LayoutInflater.from(this@GiftsService).inflate(R.layout.gifts, null, false)
+        sendView = LayoutInflater.from(this@GiftsService).inflate(R.layout.send, null, false)
+        openView = LayoutInflater.from(this@GiftsService).inflate(R.layout.open, null, false)
 
         val sendGift: MaterialButton = giftsView.findViewById(R.id.sendGift)
         sendGift.setOnClickListener {
             // Auto Touch
-            if (this@MainService::scope.isInitialized && scope.isActive) {
+            if (this@GiftsService::scope.isInitialized && scope.isActive) {
                 scope.cancel()
                 return@setOnClickListener
             }
             // Open View
-            if (this@MainService::openView.isInitialized && openView.parent != null) {
+            if (this@GiftsService::openView.isInitialized && openView.parent != null) {
                 windowManager.removeViewImmediate(openView)
             }
             // Send View
-            if (this@MainService::sendView.isInitialized && sendView.parent == null) {
+            if (this@GiftsService::sendView.isInitialized && sendView.parent == null) {
                 addView(sendView, 1, 190)
                 return@setOnClickListener
             }
-            if (this@MainService::sendView.isInitialized && sendView.parent != null) {
+            if (this@GiftsService::sendView.isInitialized && sendView.parent != null) {
                 windowManager.removeViewImmediate(sendView)
                 return@setOnClickListener
             }
@@ -81,20 +81,20 @@ class MainService : AccessibilityService() {
         val openGift: MaterialButton = giftsView.findViewById(R.id.openGift)
         openGift.setOnClickListener {
             // Auto Touch
-            if (this@MainService::scope.isInitialized && scope.isActive) {
+            if (this@GiftsService::scope.isInitialized && scope.isActive) {
                 scope.cancel()
                 return@setOnClickListener
             }
             // Send View
-            if (this@MainService::sendView.isInitialized && sendView.parent != null) {
+            if (this@GiftsService::sendView.isInitialized && sendView.parent != null) {
                 windowManager.removeViewImmediate(sendView)
             }
             // Open View
-            if (this@MainService::openView.isInitialized && openView.parent == null) {
+            if (this@GiftsService::openView.isInitialized && openView.parent == null) {
                 addView(openView, 1, 120)
                 return@setOnClickListener
             }
-            if (this@MainService::openView.isInitialized && openView.parent != null) {
+            if (this@GiftsService::openView.isInitialized && openView.parent != null) {
                 windowManager.removeViewImmediate(openView)
                 return@setOnClickListener
             }
@@ -107,11 +107,11 @@ class MainService : AccessibilityService() {
             val limit: Int? = input.text.toString().toIntOrNull()
             if (limit != null && limit > 0) {
                 // Send View
-                if (this@MainService::sendView.isInitialized && sendView.parent != null) {
+                if (this@GiftsService::sendView.isInitialized && sendView.parent != null) {
                     windowManager.removeViewImmediate(sendView)
                 }
                 // Open View
-                if (this@MainService::openView.isInitialized && openView.parent != null) {
+                if (this@GiftsService::openView.isInitialized && openView.parent != null) {
                     windowManager.removeViewImmediate(openView)
                 }
                 var count = 0
@@ -217,11 +217,11 @@ class MainService : AccessibilityService() {
             val limit: Int? = input.text.toString().toIntOrNull()
             if (limit != null && limit > 0) {
                 // Send View
-                if (this@MainService::sendView.isInitialized && sendView.parent != null) {
+                if (this@GiftsService::sendView.isInitialized && sendView.parent != null) {
                     windowManager.removeViewImmediate(sendView)
                 }
                 // Open View
-                if (this@MainService::openView.isInitialized && openView.parent != null) {
+                if (this@GiftsService::openView.isInitialized && openView.parent != null) {
                     windowManager.removeViewImmediate(openView)
                 }
                 var count = 0
@@ -327,19 +327,19 @@ class MainService : AccessibilityService() {
         if (event.packageName == "com.android.systemui" && Regex("[^A-Za-z0-9 ]").replace(event.text.toString(), "").contains("lock screen", true) && event.source != null) {
             inPokemonGO = false
             // Auto Touch
-            if (this@MainService::scope.isInitialized && scope.isActive) {
+            if (this@GiftsService::scope.isInitialized && scope.isActive) {
                 scope.cancel()
             }
             // Gifts View
-            if (this@MainService::giftsView.isInitialized && giftsView.parent != null) {
+            if (this@GiftsService::giftsView.isInitialized && giftsView.parent != null) {
                 windowManager.removeViewImmediate(giftsView)
             }
             // Send View
-            if (this@MainService::sendView.isInitialized && sendView.parent != null) {
+            if (this@GiftsService::sendView.isInitialized && sendView.parent != null) {
                 windowManager.removeViewImmediate(sendView)
             }
             // Open View
-            if (this@MainService::openView.isInitialized && openView.parent != null) {
+            if (this@GiftsService::openView.isInitialized && openView.parent != null) {
                 windowManager.removeViewImmediate(openView)
             }
         }
@@ -351,19 +351,19 @@ class MainService : AccessibilityService() {
             } else {
                 inPokemonGO = false
                 // Auto Touch
-                if (this@MainService::scope.isInitialized && scope.isActive) {
+                if (this@GiftsService::scope.isInitialized && scope.isActive) {
                     scope.cancel()
                 }
                 // Gifts View
-                if (this@MainService::giftsView.isInitialized && giftsView.parent != null) {
+                if (this@GiftsService::giftsView.isInitialized && giftsView.parent != null) {
                     windowManager.removeViewImmediate(giftsView)
                 }
                 // Send View
-                if (this@MainService::sendView.isInitialized && sendView.parent != null) {
+                if (this@GiftsService::sendView.isInitialized && sendView.parent != null) {
                     windowManager.removeViewImmediate(sendView)
                 }
                 // Open View
-                if (this@MainService::openView.isInitialized && openView.parent != null) {
+                if (this@GiftsService::openView.isInitialized && openView.parent != null) {
                     windowManager.removeViewImmediate(openView)
                 }
             }
@@ -386,11 +386,11 @@ class MainService : AccessibilityService() {
         if (align == 1) {
             windowManagerLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
             windowManagerLayoutParams.gravity = Gravity.TOP or Gravity.CENTER
-            windowManagerLayoutParams.y = 70 * (this@MainService.resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
+            windowManagerLayoutParams.y = 70 * (this@GiftsService.resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
         }
 
-        windowManagerLayoutParams.height = height * (this@MainService.resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
-        windowManagerLayoutParams.width = 400 * (this@MainService.resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
+        windowManagerLayoutParams.height = height * (this@GiftsService.resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
+        windowManagerLayoutParams.width = 400 * (this@GiftsService.resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
         windowManager.addView(view, windowManagerLayoutParams)
     }
 
@@ -404,22 +404,22 @@ class MainService : AccessibilityService() {
                         val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
                         recognizer.process(image)
                             .addOnSuccessListener { visionText ->
-                                if (Regex("[^A-Za-z0-9 ]").replace(visionText.text.replace("\n", ""), "").contains("FRIENDS") || sendView.parent != null || openView.parent != null || (this@MainService::scope.isInitialized && scope.isActive)) {
+                                if (Regex("[^A-Za-z0-9 ]").replace(visionText.text.replace("\n", ""), "").contains("FRIENDS") || sendView.parent != null || openView.parent != null || (this@GiftsService::scope.isInitialized && scope.isActive)) {
                                     // Gifts View
-                                    if (inPokemonGO && this@MainService::giftsView.isInitialized && giftsView.parent == null) {
+                                    if (inPokemonGO && this@GiftsService::giftsView.isInitialized && giftsView.parent == null) {
                                         addView(giftsView, 0, 50)
                                     }
                                 } else {
                                     // Gifts View
-                                    if (this@MainService::giftsView.isInitialized && giftsView.parent != null) {
+                                    if (this@GiftsService::giftsView.isInitialized && giftsView.parent != null) {
                                         windowManager.removeViewImmediate(giftsView)
                                     }
                                     // Send View
-                                    if (this@MainService::sendView.isInitialized && sendView.parent != null) {
+                                    if (this@GiftsService::sendView.isInitialized && sendView.parent != null) {
                                         windowManager.removeViewImmediate(sendView)
                                     }
                                     // Open View
-                                    if (this@MainService::openView.isInitialized && openView.parent != null) {
+                                    if (this@GiftsService::openView.isInitialized && openView.parent != null) {
                                         windowManager.removeViewImmediate(openView)
                                     }
                                 }
