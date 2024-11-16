@@ -5,7 +5,6 @@ import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 
 class BluetoothService : AccessibilityService() {
-
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         if (event == null) return
 
