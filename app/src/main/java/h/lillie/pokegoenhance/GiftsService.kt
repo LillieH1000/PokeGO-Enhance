@@ -114,10 +114,10 @@ class GiftsService : AccessibilityService() {
                     windowManager.removeViewImmediate(openView)
                 }
                 var count = 0
-                scope = CoroutineScope(Dispatchers.Default).launch {
+                scope = CoroutineScope(Dispatchers.IO).launch {
                     while (true) {
                         ensureActive()
-                        suspend fun dispatch(x: Float, y: Float) = withContext(Dispatchers.Default) {
+                        suspend fun dispatch(x: Float, y: Float) = withContext(Dispatchers.IO) {
                             val path = Path()
 
                             path.reset()
@@ -224,10 +224,10 @@ class GiftsService : AccessibilityService() {
                     windowManager.removeViewImmediate(openView)
                 }
                 var count = 0
-                scope = CoroutineScope(Dispatchers.Default).launch {
+                scope = CoroutineScope(Dispatchers.IO).launch {
                     while (true) {
                         ensureActive()
-                        suspend fun dispatch(x: Float, y: Float) = withContext(Dispatchers.Default) {
+                        suspend fun dispatch(x: Float, y: Float) = withContext(Dispatchers.IO) {
                             val path = Path()
 
                             path.reset()
