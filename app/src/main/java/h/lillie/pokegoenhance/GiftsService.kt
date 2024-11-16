@@ -29,6 +29,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.util.concurrent.Executors
 
@@ -100,7 +101,7 @@ class GiftsService : AccessibilityService() {
         }
 
         val send: MaterialButton = sendView.findViewById(R.id.start)
-        send.setOnClickListener {
+        send.setOnClickListener { runBlocking {
             val topSwitch: SwitchMaterial = sendView.findViewById(R.id.top)
             val input: EditText = sendView.findViewById(R.id.input)
             val limit: Int? = input.text.toString().toIntOrNull()
@@ -114,10 +115,10 @@ class GiftsService : AccessibilityService() {
                     windowManager.removeViewImmediate(openView)
                 }
                 var count = 0
-                scope = CoroutineScope(Dispatchers.Default).launch {
+                scope = CoroutineScope(Dispatchers.IO).launch {
                     while (true) {
                         ensureActive()
-                        suspend fun dispatch(x: Float, y: Float) = withContext(Dispatchers.Default) {
+                        suspend fun dispatch(x: Float, y: Float) = withContext(Dispatchers.IO) {
                             val path = Path()
 
                             path.reset()
@@ -207,11 +208,12 @@ class GiftsService : AccessibilityService() {
                         }
                     }
                 }
+                scope.join()
             }
-        }
+        }}
 
         val open: MaterialButton = openView.findViewById(R.id.start)
-        open.setOnClickListener {
+        open.setOnClickListener { runBlocking {
             val input: EditText = openView.findViewById(R.id.input)
             val limit: Int? = input.text.toString().toIntOrNull()
             if (limit != null && limit > 0) {
@@ -224,10 +226,10 @@ class GiftsService : AccessibilityService() {
                     windowManager.removeViewImmediate(openView)
                 }
                 var count = 0
-                scope = CoroutineScope(Dispatchers.Default).launch {
+                scope = CoroutineScope(Dispatchers.IO).launch {
                     while (true) {
                         ensureActive()
-                        suspend fun dispatch(x: Float, y: Float) = withContext(Dispatchers.Default) {
+                        suspend fun dispatch(x: Float, y: Float) = withContext(Dispatchers.IO) {
                             val path = Path()
 
                             path.reset()
@@ -301,8 +303,9 @@ class GiftsService : AccessibilityService() {
                         }
                     }
                 }
+                scope.join()
             }
-        }
+        }}
 
         overlayHandler = Handler(Looper.getMainLooper())
         overlayHandler.post(overlayTask)
