@@ -3,6 +3,4 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:description="@string/bluetooth"
     android:accessibilityEventTypes="typeWindowStateChanged"
-    android:canPerformGestures="true"
-    android:canRetrieveWindowContent="true"
-    android:canTakeScreenshot="true" />
+    android:canRetrieveWindowContent="true" />
