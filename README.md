@@ -1,6 +1,6 @@
 # PokeGO Enhance
 
-My personal Android app that uses an AccessibilityService to send inputs to Pokemon GO to automatically open gifts and automatically send gifts.
+My personal Android app that uses an AccessibilityService to auto skip the pair prompt on go plus connection and send inputs to Pokemon GO to automatically open gifts and automatically send gifts.
 
 Designed for screen resolutions of 1080x2400 at 120hz.
 
